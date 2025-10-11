@@ -2,7 +2,7 @@
 #define RUBIKS_CUBE_H
 
 #include <vector>
-enum class Color {
+ class Color {
     WHITE = 0,
     YELLOW = 1,
     RED = 2,
@@ -32,7 +32,7 @@ public:
     RubiksCube();
     void initialize();
 
-    // Повороты граней
+    // ГЏГ®ГўГ®Г°Г®ГІГ» ГЈГ°Г Г­ГҐГ©
     void rotateFrontClockwise();
     void rotateFrontCounterClockwise();
     void rotateRightClockwise();
@@ -50,5 +50,6 @@ public:
     bool isSolved();
     void display();
 };
+
 
 #endif

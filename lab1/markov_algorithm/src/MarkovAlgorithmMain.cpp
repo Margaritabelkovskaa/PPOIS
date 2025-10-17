@@ -1,5 +1,5 @@
 #include <iostream>
-#include "markov_algorithm.h"
+#include "MarkovAlgorithm.h"
 
 using namespace std;
 
@@ -76,4 +76,5 @@ int main() {
     } while (choice != 0);
 
     return 0;
+
 }

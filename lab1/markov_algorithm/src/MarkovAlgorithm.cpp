@@ -1,4 +1,4 @@
-#include "markov_algorithm.h"
+#include "MarkovAlgorithm.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -101,3 +101,4 @@ void MarkovAlgorithm::printSingleRule(size_t index) const {
     }
     cout << rules[index].to << endl;
 }
+

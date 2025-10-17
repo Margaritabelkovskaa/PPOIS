@@ -255,11 +255,11 @@ void RubiksCube::printFace(const std::vector<std::vector<Color>>& face) {
 }
 
 void RubiksCube::display() {
-    std::cout << "Êóáèê-ðóáèê:\n" << std::endl;
-    std::cout << "Ââåðõ(áåëûé):" << std::endl;
+    std::cout << "ÃŠÃ³Ã¡Ã¨Ãª-Ã°Ã³Ã¡Ã¨Ãª:\n" << std::endl;
+    std::cout << "Ã‚Ã¢Ã¥Ã°Ãµ(Ã¡Ã¥Ã«Ã»Ã©):" << std::endl;
     printFace(up);
     std::cout << std::endl;
-    std::cout << "Ñåðåäèíà:" << std::endl;
+    std::cout << "Ã‘Ã¥Ã°Ã¥Ã¤Ã¨Ã­Ã :" << std::endl;
     for (int i = 0; i < 3; i++) {
         std::cout << "  ";
         printRow(left[i]);
@@ -272,6 +272,6 @@ void RubiksCube::display() {
         std::cout << std::endl;
     }
     std::cout << std::endl;
-    std::cout << "Íèç(æåëòûé):" << std::endl;
+    std::cout << "ÃÃ¨Ã§(Ã¦Ã¥Ã«Ã²Ã»Ã©):" << std::endl;
     printFace(down);
 }

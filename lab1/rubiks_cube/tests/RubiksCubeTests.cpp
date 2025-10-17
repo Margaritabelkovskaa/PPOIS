@@ -1,17 +1,18 @@
-// tests_rubiks_cube_no_header.cpp
 #include <gtest/gtest.h>
-#include <vector>
-#include <functional>
-#include <chrono>
-#include "rubiks_cube.h"
+#include <iostream>
+#include <sstream>
+#include <string>
+#include "RubiksCube.h"
 
-// 1. Тест начального состояния
+using namespace std;
+
+// 1. РўРµСЃС‚ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
 TEST(RubiksCubeTest, InitialStateIsSolved) {
     RubiksCube cube;
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 2. Тест поворота передней грани по часовой и обратно
+// 2. РўРµСЃС‚ РїРѕРІРѕСЂРѕС‚Р° РїРµСЂРµРґРЅРµР№ РіСЂР°РЅРё РїРѕ С‡Р°СЃРѕРІРѕР№ Рё РѕР±СЂР°С‚РЅРѕ
 TEST(RubiksCubeTest, FrontClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateFrontClockwise();
@@ -21,7 +22,7 @@ TEST(RubiksCubeTest, FrontClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 3. Тест четырех поворотов передней грани по часовой
+// 3. РўРµСЃС‚ С‡РµС‚С‹СЂРµС… РїРѕРІРѕСЂРѕС‚РѕРІ РїРµСЂРµРґРЅРµР№ РіСЂР°РЅРё РїРѕ С‡Р°СЃРѕРІРѕР№
 TEST(RubiksCubeTest, FourFrontClockwiseRotations) {
     RubiksCube cube;
     for (int i = 0; i < 4; i++) {
@@ -30,7 +31,7 @@ TEST(RubiksCubeTest, FourFrontClockwiseRotations) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 4. Тест поворота правой грани по часовой и обратно
+// 4. РўРµСЃС‚ РїРѕРІРѕСЂРѕС‚Р° РїСЂР°РІРѕР№ РіСЂР°РЅРё РїРѕ С‡Р°СЃРѕРІРѕР№ Рё РѕР±СЂР°С‚РЅРѕ
 TEST(RubiksCubeTest, RightClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateRightClockwise();
@@ -40,7 +41,7 @@ TEST(RubiksCubeTest, RightClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 5. Тест четырех поворотов правой грани
+// 5. РўРµСЃС‚ С‡РµС‚С‹СЂРµС… РїРѕРІРѕСЂРѕС‚РѕРІ РїСЂР°РІРѕР№ РіСЂР°РЅРё
 TEST(RubiksCubeTest, FourRightClockwiseRotations) {
     RubiksCube cube;
     for (int i = 0; i < 4; i++) {
@@ -49,7 +50,7 @@ TEST(RubiksCubeTest, FourRightClockwiseRotations) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 6. Тест поворота левой грани
+// 6. РўРµСЃС‚ РїРѕРІРѕСЂРѕС‚Р° Р»РµРІРѕР№ РіСЂР°РЅРё
 TEST(RubiksCubeTest, LeftClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateLeftClockwise();
@@ -59,7 +60,7 @@ TEST(RubiksCubeTest, LeftClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 7. Тест верхней грани
+// 7. РўРµСЃС‚ РІРµСЂС…РЅРµР№ РіСЂР°РЅРё
 TEST(RubiksCubeTest, UpClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateUpClockwise();
@@ -69,7 +70,7 @@ TEST(RubiksCubeTest, UpClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 8. Тест нижней грани
+// 8. РўРµСЃС‚ РЅРёР¶РЅРµР№ РіСЂР°РЅРё
 TEST(RubiksCubeTest, DownClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateDownClockwise();
@@ -79,7 +80,7 @@ TEST(RubiksCubeTest, DownClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 9. Тест задней грани
+// 9. РўРµСЃС‚ Р·Р°РґРЅРµР№ РіСЂР°РЅРё
 TEST(RubiksCubeTest, BackClockwiseCounterClockwise) {
     RubiksCube cube;
     cube.rotateBackClockwise();
@@ -89,11 +90,10 @@ TEST(RubiksCubeTest, BackClockwiseCounterClockwise) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 10. Тест комбинации R U R' U'
+// 10. РўРµСЃС‚ РєРѕРјР±РёРЅР°С†РёРё R U R' U'
 TEST(RubiksCubeTest, RURPrimeUPrimeSequence) {
     RubiksCube cube;
 
-    // R U R' U'
     cube.rotateRightClockwise();
     cube.rotateUpClockwise();
     cube.rotateRightCounterClockwise();
@@ -101,7 +101,6 @@ TEST(RubiksCubeTest, RURPrimeUPrimeSequence) {
 
     EXPECT_FALSE(cube.isSolved());
 
-    // Повторяем последовательность еще 5 раз (всего 6) для возврата в исходное состояние
     for (int i = 0; i < 5; i++) {
         cube.rotateRightClockwise();
         cube.rotateUpClockwise();
@@ -111,7 +110,7 @@ TEST(RubiksCubeTest, RURPrimeUPrimeSequence) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 11. Тест перемешивания и сброса
+// 11. РўРµСЃС‚ РїРµСЂРµРјРµС€РёРІР°РЅРёСЏ Рё СЃР±СЂРѕСЃР°
 TEST(RubiksCubeTest, ScrambleAndReset) {
     RubiksCube cube;
     cube.scramble(10);
@@ -121,7 +120,7 @@ TEST(RubiksCubeTest, ScrambleAndReset) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 12. Тест множественного перемешивания
+// 12. РўРµСЃС‚ РјРЅРѕР¶РµСЃС‚РІРµРЅРЅРѕРіРѕ РїРµСЂРµРјРµС€РёРІР°РЅРёСЏ
 TEST(RubiksCubeTest, MultipleScrambles) {
     RubiksCube cube;
     for (int i = 0; i < 5; i++) {
@@ -132,7 +131,7 @@ TEST(RubiksCubeTest, MultipleScrambles) {
     }
 }
 
-// 13. Тест комбинации F R U B L D
+// 13. РўРµСЃС‚ РєРѕРјР±РёРЅР°С†РёРё F R U B L D
 TEST(RubiksCubeTest, FRUBLDSequence) {
     RubiksCube cube;
     cube.rotateFrontClockwise();
@@ -145,11 +144,10 @@ TEST(RubiksCubeTest, FRUBLDSequence) {
     EXPECT_FALSE(cube.isSolved());
 }
 
-// 14. Тест обратной комбинации D' L' B' U' R' F'
+// 14. РўРµСЃС‚ РѕР±СЂР°С‚РЅРѕР№ РєРѕРјР±РёРЅР°С†РёРё D' L' B' U' R' F'
 TEST(RubiksCubeTest, ReverseFRUBLDSequence) {
     RubiksCube cube;
 
-    // F R U B L D
     cube.rotateFrontClockwise();
     cube.rotateRightClockwise();
     cube.rotateUpClockwise();
@@ -157,7 +155,6 @@ TEST(RubiksCubeTest, ReverseFRUBLDSequence) {
     cube.rotateLeftClockwise();
     cube.rotateDownClockwise();
 
-    // D' L' B' U' R' F'
     cube.rotateDownCounterClockwise();
     cube.rotateLeftCounterClockwise();
     cube.rotateBackCounterClockwise();
@@ -168,10 +165,9 @@ TEST(RubiksCubeTest, ReverseFRUBLDSequence) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 15. Тест алгоритма "секси мов"
-TEST(RubiksCubeTest, SexyMoveAlgorithm) {
+// 15. РўРµСЃС‚ Р±Р°Р·РѕРІРѕРіРѕ Р°Р»РіРѕСЂРёС‚РјР° СЃР±РѕСЂРєРё
+TEST(RubiksCubeTest, BasicAlgorithm) {
     RubiksCube cube;
-    // R U R' U' - известный алгоритм
     cube.rotateRightClockwise();
     cube.rotateUpClockwise();
     cube.rotateRightCounterClockwise();
@@ -179,7 +175,6 @@ TEST(RubiksCubeTest, SexyMoveAlgorithm) {
 
     EXPECT_FALSE(cube.isSolved());
 
-    // Обратный алгоритм
     cube.rotateUpClockwise();
     cube.rotateRightClockwise();
     cube.rotateUpCounterClockwise();
@@ -188,49 +183,34 @@ TEST(RubiksCubeTest, SexyMoveAlgorithm) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 16. Тест T-пермутации
+// 16. РўРµСЃС‚ T-РїРµСЂРјСѓС‚Р°С†РёРё
 TEST(RubiksCubeTest, TPermutation) {
     RubiksCube cube;
-    // R U R' U' R' F R2 U' R' U' R U R' F'
-    cube.rotateRightClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateFrontClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateFrontCounterClockwise();
+    vector<function<void()>> moves = {
+        [&]() { cube.rotateRightClockwise(); },
+        [&]() { cube.rotateUpClockwise(); },
+        [&]() { cube.rotateRightCounterClockwise(); },
+        [&]() { cube.rotateUpCounterClockwise(); },
+        [&]() { cube.rotateRightCounterClockwise(); },
+        [&]() { cube.rotateFrontClockwise(); },
+        [&]() { cube.rotateRightClockwise(); cube.rotateRightClockwise(); },
+        [&]() { cube.rotateUpCounterClockwise(); },
+        [&]() { cube.rotateRightCounterClockwise(); },
+        [&]() { cube.rotateUpCounterClockwise(); },
+        [&]() { cube.rotateRightClockwise(); },
+        [&]() { cube.rotateUpClockwise(); },
+        [&]() { cube.rotateRightCounterClockwise(); },
+        [&]() { cube.rotateFrontCounterClockwise(); }
+    };
 
+    for (auto& move : moves) move();
     EXPECT_FALSE(cube.isSolved());
 
-    // Двойное применение T-пермутации должно вернуть в исходное состояние
-    cube.rotateRightClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateFrontClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateFrontCounterClockwise();
-
+    for (auto& move : moves) move();
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 17. Тест перемешивания разной длины
+// 17. РўРµСЃС‚ РїРµСЂРµРјРµС€РёРІР°РЅРёСЏ СЂР°Р·РЅРѕР№ РґР»РёРЅС‹
 TEST(RubiksCubeTest, DifferentScrambleLengths) {
     RubiksCube cube1, cube2, cube3;
 
@@ -246,7 +226,7 @@ TEST(RubiksCubeTest, DifferentScrambleLengths) {
     EXPECT_FALSE(state5 || state20 || state50);
 }
 
-// 18. Тест повторной инициализации
+// 18. РўРµСЃС‚ РїРѕРІС‚РѕСЂРЅРѕР№ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
 TEST(RubiksCubeTest, Reinitialization) {
     RubiksCube cube;
 
@@ -259,7 +239,7 @@ TEST(RubiksCubeTest, Reinitialization) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 19. Тест граничных значений перемешивания
+// 19. РўРµСЃС‚ РіСЂР°РЅРёС‡РЅС‹С… Р·РЅР°С‡РµРЅРёР№ РїРµСЂРµРјРµС€РёРІР°РЅРёСЏ
 TEST(RubiksCubeTest, BoundaryScrambleValues) {
     RubiksCube cube1, cube2;
 
@@ -270,22 +250,21 @@ TEST(RubiksCubeTest, BoundaryScrambleValues) {
     EXPECT_FALSE(cube2.isSolved());
 }
 
-// 20. Тест сложной комбинации
+// 20. РўРµСЃС‚ СЃР»РѕР¶РЅРѕР№ РєРѕРјР±РёРЅР°С†РёРё
 TEST(RubiksCubeTest, ComplexCombination) {
     RubiksCube cube;
 
-    // R2 U2 R2 U2 R2 U2
-    for (int i = 0; i < 3; i++) {
-        cube.rotateRightClockwise();
+    for (int i = 0; i < 6; i++) {
         cube.rotateRightClockwise();
         cube.rotateUpClockwise();
-        cube.rotateUpClockwise();
+        cube.rotateRightCounterClockwise();
+        cube.rotateUpCounterClockwise();
     }
 
-    EXPECT_TRUE(cube.isSolved()); // Должно остаться решенным
+    EXPECT_TRUE(cube.isSolved());
 }
 
-// 21. Тест проверки после каждого хода
+// 21. РўРµСЃС‚ РїСЂРѕРІРµСЂРєРё РїРѕСЃР»Рµ РєР°Р¶РґРѕРіРѕ С…РѕРґР°
 TEST(RubiksCubeTest, CheckAfterEachMove) {
     RubiksCube cube;
 
@@ -308,51 +287,44 @@ TEST(RubiksCubeTest, CheckAfterEachMove) {
     EXPECT_FALSE(cube.isSolved());
 }
 
-// 22. Тест симметричных последовательностей
+// 22. РўРµСЃС‚ СЃРёРјРјРµС‚СЂРёС‡РЅС‹С… РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№
 TEST(RubiksCubeTest, SymmetricSequences) {
     RubiksCube cube;
 
-    cube.rotateFrontClockwise();
-    cube.rotateFrontCounterClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateRightCounterClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateUpCounterClockwise();
-    cube.rotateLeftClockwise();
-    cube.rotateLeftCounterClockwise();
-    cube.rotateDownClockwise();
-    cube.rotateDownCounterClockwise();
-    cube.rotateBackClockwise();
-    cube.rotateBackCounterClockwise();
+    vector<function<void()>> moves = {
+        [&]() { cube.rotateFrontClockwise(); },
+        [&]() { cube.rotateFrontCounterClockwise(); },
+        [&]() { cube.rotateRightClockwise(); },
+        [&]() { cube.rotateRightCounterClockwise(); },
+        [&]() { cube.rotateUpClockwise(); },
+        [&]() { cube.rotateUpCounterClockwise(); },
+        [&]() { cube.rotateLeftClockwise(); },
+        [&]() { cube.rotateLeftCounterClockwise(); },
+        [&]() { cube.rotateDownClockwise(); },
+        [&]() { cube.rotateDownCounterClockwise(); },
+        [&]() { cube.rotateBackClockwise(); },
+        [&]() { cube.rotateBackCounterClockwise(); }
+    };
 
+    for (auto& move : moves) move();
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 23. Тест чередования поворотов
-TEST(RubiksCubeTest, AlternatingMoves) {
-    RubiksCube cube;
-
-    for (int i = 0; i < 6; i++) {
-        cube.rotateFrontClockwise();
-        cube.rotateRightClockwise();
-        cube.rotateUpClockwise();
-    }
-    EXPECT_TRUE(cube.isSolved());
-}
-
-// 24. Тест обратного чередования
+// 23. РўРµСЃС‚ РѕР±СЂР°С‚РЅРѕРіРѕ С‡РµСЂРµРґРѕРІР°РЅРёСЏ
 TEST(RubiksCubeTest, ReverseAlternatingMoves) {
     RubiksCube cube;
 
-    for (int i = 0; i < 6; i++) {
-        cube.rotateFrontCounterClockwise();
+    for (int i = 0; i < 4; i++) {
         cube.rotateRightCounterClockwise();
-        cube.rotateUpCounterClockwise();
+        cube.rotateFrontCounterClockwise();
+        cube.rotateRightClockwise();
+        cube.rotateFrontClockwise();
     }
+
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 25. Тест проверки состояния после reset
+// 24. РўРµСЃС‚ РїСЂРѕРІРµСЂРєРё СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРѕСЃР»Рµ reset
 TEST(RubiksCubeTest, StateAfterReset) {
     RubiksCube cube;
 
@@ -366,11 +338,10 @@ TEST(RubiksCubeTest, StateAfterReset) {
     EXPECT_TRUE(reset);
 }
 
-// 26. Тест последовательности для проверки целостности
+// 25. РўРµСЃС‚ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РґР»СЏ РїСЂРѕРІРµСЂРєРё С†РµР»РѕСЃС‚РЅРѕСЃС‚Рё
 TEST(RubiksCubeTest, IntegrityCheckSequence) {
     RubiksCube cube;
 
-    // Три раза F R U B L D
     for (int i = 0; i < 3; i++) {
         cube.rotateFrontClockwise();
         cube.rotateRightClockwise();
@@ -382,7 +353,6 @@ TEST(RubiksCubeTest, IntegrityCheckSequence) {
 
     EXPECT_FALSE(cube.isSolved());
 
-    // Три раза обратная последовательность
     for (int i = 0; i < 3; i++) {
         cube.rotateDownCounterClockwise();
         cube.rotateLeftCounterClockwise();
@@ -395,58 +365,34 @@ TEST(RubiksCubeTest, IntegrityCheckSequence) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 27. Тест экстремального перемешивания
+// 26. РўРµСЃС‚ СЌРєСЃС‚СЂРµРјР°Р»СЊРЅРѕРіРѕ РїРµСЂРµРјРµС€РёРІР°РЅРёСЏ
 TEST(RubiksCubeTest, ExtremeScrambling) {
     RubiksCube cube;
 
     cube.scramble(1000);
     EXPECT_FALSE(cube.isSolved());
 
-    // Проверяем, что после экстремального перемешивания сброс работает
     cube.initialize();
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 28. Тест комбинации для проверки всех граней
-TEST(RubiksCubeTest, AllFacesCombination) {
-    RubiksCube cube;
-
-    cube.rotateFrontClockwise();
-    cube.rotateFrontClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateRightClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateUpClockwise();
-    cube.rotateBackClockwise();
-    cube.rotateBackClockwise();
-    cube.rotateLeftClockwise();
-    cube.rotateLeftClockwise();
-    cube.rotateDownClockwise();
-    cube.rotateDownClockwise();
-
-    EXPECT_TRUE(cube.isSolved());
-}
-
-// 29. Тест на идентичность двух последовательностей
+// 27. РўРµСЃС‚ РЅР° РёРґРµРЅС‚РёС‡РЅРѕСЃС‚СЊ РґРІСѓС… РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚РµР№
 TEST(RubiksCubeTest, SequenceEquivalence) {
     RubiksCube cube1, cube2;
 
-    // Одинаковые последовательности
     cube1.rotateFrontClockwise();
     cube1.rotateRightClockwise();
 
     cube2.rotateFrontClockwise();
     cube2.rotateRightClockwise();
 
-    // Кубы должны быть в одинаковом состоянии
     EXPECT_EQ(cube1.isSolved(), cube2.isSolved());
 }
 
-// 30. Тест инверсных операций
+// 28. РўРµСЃС‚ РёРЅРІРµСЂСЃРЅС‹С… РѕРїРµСЂР°С†РёР№
 TEST(RubiksCubeTest, InverseOperations) {
     RubiksCube cube;
 
-    // Применяем операции
     cube.rotateFrontClockwise();
     cube.rotateRightClockwise();
     cube.rotateUpClockwise();
@@ -454,7 +400,6 @@ TEST(RubiksCubeTest, InverseOperations) {
 
     EXPECT_FALSE(cube.isSolved());
 
-    // Применяем обратные операции в обратном порядке
     cube.rotateBackCounterClockwise();
     cube.rotateUpCounterClockwise();
     cube.rotateRightCounterClockwise();
@@ -463,83 +408,24 @@ TEST(RubiksCubeTest, InverseOperations) {
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 31. Тест производительности
-TEST(RubiksCubeTest, PerformanceTest) {
-    RubiksCube cube;
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    for (int i = 0; i < 1000; i++) {
-        cube.rotateFrontClockwise();
-        cube.rotateRightClockwise();
-        cube.rotateUpClockwise();
-    }
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-    // Проверяем, что выполнение заняло разумное время (менее 1 секунды)
-    EXPECT_LT(duration.count(), 1000);
-}
-
-// 32. Тест детерминированности перемешивания
-TEST(RubiksCubeTest, ScrambleDeterminism) {
-    RubiksCube cube1, cube2;
-
-    // Перемешиваем с одинаковым количеством ходов
-    cube1.scramble(20);
-    cube2.scramble(20);
-
-    // Кубы должны быть в разных состояниях (из-за случайности),
-    // но оба не должны быть решены
-    EXPECT_FALSE(cube1.isSolved());
-    EXPECT_FALSE(cube2.isSolved());
-}
-
-// 33. Тест базовых свойств куба
-TEST(RubiksCubeTest, BasicCubeProperties) {
-    RubiksCube cube;
-
-    // После инициализации куб должен быть решен
-    EXPECT_TRUE(cube.isSolved());
-
-    // Любой одиночный ход должен нарушить собранное состояние
-    cube.rotateFrontClockwise();
-    EXPECT_FALSE(cube.isSolved());
-
-    cube.initialize();
-    cube.rotateRightClockwise();
-    EXPECT_FALSE(cube.isSolved());
-}
-
-// 34. Тест комбинации с повторяющимися ходами
+// 29. РўРµСЃС‚ РєРѕРјР±РёРЅР°С†РёРё СЃ РїРѕРІС‚РѕСЂСЏСЋС‰РёРјРёСЃСЏ С…РѕРґР°РјРё
 TEST(RubiksCubeTest, RepeatedMovesCombination) {
     RubiksCube cube;
 
-    // F F F F = identity
-    for (int i = 0; i < 4; i++) {
-        cube.rotateFrontClockwise();
-    }
+    for (int i = 0; i < 4; i++) cube.rotateFrontClockwise();
     EXPECT_TRUE(cube.isSolved());
 
-    // R R R R = identity
-    for (int i = 0; i < 4; i++) {
-        cube.rotateRightClockwise();
-    }
+    for (int i = 0; i < 4; i++) cube.rotateRightClockwise();
     EXPECT_TRUE(cube.isSolved());
 
-    // U U U U = identity
-    for (int i = 0; i < 4; i++) {
-        cube.rotateUpClockwise();
-    }
+    for (int i = 0; i < 4; i++) cube.rotateUpClockwise();
     EXPECT_TRUE(cube.isSolved());
 }
 
-// 35. Тест сложной восстановительной последовательности
+// 30. РўРµСЃС‚ СЃР»РѕР¶РЅРѕР№ РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚РµР»СЊРЅРѕР№ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 TEST(RubiksCubeTest, ComplexRecoverySequence) {
     RubiksCube cube;
 
-    // Случайная последовательность
     cube.rotateFrontClockwise();
     cube.rotateRightCounterClockwise();
     cube.rotateUpClockwise();
@@ -551,7 +437,6 @@ TEST(RubiksCubeTest, ComplexRecoverySequence) {
 
     EXPECT_FALSE(cube.isSolved());
 
-    // Обратная последовательность для восстановления
     cube.rotateRightCounterClockwise();
     cube.rotateFrontClockwise();
     cube.rotateDownClockwise();

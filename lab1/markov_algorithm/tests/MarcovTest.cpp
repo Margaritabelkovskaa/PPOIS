@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "markov_algorithm.h"
+#include "MarkovAlgorithm.h"
 
 // 1. 
 TEST(MarkovTest, SimpleReplacement) {
@@ -225,4 +225,5 @@ int main(int argc, char** argv) {
     return RUN_ALL_TESTS();
 
 }
+
 

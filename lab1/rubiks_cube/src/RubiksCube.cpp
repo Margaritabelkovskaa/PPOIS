@@ -1,4 +1,4 @@
-#include "rubiks_cube.h"
+#include "RubiksCube.h"
 #include <iostream>
 #include <random>
 
@@ -275,3 +275,4 @@ void RubiksCube::display() {
     std::cout << "Íèç(æåëòûé):" << std::endl;
     printFace(down);
 }
+

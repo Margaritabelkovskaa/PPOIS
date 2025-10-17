@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <string>
-#include "rubiks_cube.h"
+#include "RubiksCube.h"
 
 int getInput() {
     int choice;
@@ -196,4 +196,5 @@ int main() {
         }
     }
     return 0;
+
 }

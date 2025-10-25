@@ -4,8 +4,9 @@
 
 Driver::Driver(const std::string& name, const std::string& phone,
     DrivingLicense* license, double salary)
-    : name(name), phone(phone), license(license), assignedVehicle(nullptr),
-    salaryPerHour(salary), isAvailable(true) {
+    : Employee("DRV_001", name, phone, "", "Driver", salary * 160, "2024-01-01", "Transport"),
+      license(license), assignedVehicle(nullptr), 
+      salaryPerHour(salary), isAvailable(true) {
 }
 
 Driver::~Driver() {

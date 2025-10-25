@@ -21,12 +21,7 @@ public:
     void assignVehicle(Vehicle* vehicle);
     void setAvailability(bool available);
     double calculateSalary(int hours) const;
-    
-    // Переопределение виртуальных методов
-    double calculateBonus() const override;
-    void displayInfo() const override;
 
-    // Геттеры
     DrivingLicense* getLicense() const { return license; }
     Vehicle* getAssignedVehicle() const { return assignedVehicle; }
     double getSalaryPerHour() const { return salaryPerHour; }

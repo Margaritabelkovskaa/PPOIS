@@ -1,36 +1,33 @@
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef DISPATCHER_H
+#define DISPATCHER_H
 
 #include <string>
 #include <vector>
 #include "Employee.h"
 
+class Order;
 class Driver;
 class Vehicle;
-class Order;
 
-class Manager : public Employee {
+class Dispatcher : public Employee {
 private:
-    std::vector<Driver*> managedDrivers;
-    std::vector<Vehicle*> managedVehicles;
+    std::vector<Order*> pendingOrders;
+    std::vector<Driver*> availableDrivers;
 
 public:
-    Manager(const std::string& name, const std::string& phone,
-        const std::string& email, const std::string& department);
+    Dispatcher(const std::string& name, const std::string& phone);
     
     // Переопределение виртуальных методов
     double calculateBonus() const override;
-    void promote(const std::string& newPosition) override;
     void displayInfo() const override;
 
-    void assignDriverToOrder(Driver* driver, Order* order);
-    void approveOrder(Order* order);
-    void generateDailyReport() const;
-    void addDriverToTeam(Driver* driver);
-    void addVehicleToFleet(Vehicle* vehicle);
+    void receiveOrder(Order* order);
+    void assignOrderToDriver(Order* order, Driver* driver);
+    Vehicle* findSuitableVehicle(Order* order);
+    void updateOrderStatus(Order* order, const std::string& status);
 
-    int getTeamSize() const { return managedDrivers.size(); }
-    int getFleetSize() const { return managedVehicles.size(); }
+    int getPendingOrdersCount() const { return pendingOrders.size(); }
+    int getAvailableDriversCount() const { return availableDrivers.size(); }
 };
 
 #endif

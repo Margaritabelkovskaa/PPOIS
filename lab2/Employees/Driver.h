@@ -2,13 +2,12 @@
 #define DRIVER_H
 
 #include <string>
+#include "Employee.h"
 #include "DrivingLicense.h"
 #include "Vehicle.h"
 
-class Driver {
+class Driver : public Employee {
 private:
-    std::string name;
-    std::string phone;
     DrivingLicense* license;
     Vehicle* assignedVehicle;
     double salaryPerHour;
@@ -22,15 +21,16 @@ public:
     void assignVehicle(Vehicle* vehicle);
     void setAvailability(bool available);
     double calculateSalary(int hours) const;
+    
+    // –ü–µ—Ä–µ–æ–ø—Ä–µ–¥–µ–ª–µ–Ω–∏–µ –≤–∏—Ä—Ç—É–∞–ª—å–Ω—ã—Ö –º–µ—Ç–æ–¥–æ–≤
+    double calculateBonus() const override;
+    void displayInfo() const override;
 
-    // √ÂÚÚÂ˚
-    std::string getName() const { return name; }
-    std::string getPhone() const { return phone; }
+    // –ì–µ—Ç—Ç–µ—Ä—ã
     DrivingLicense* getLicense() const { return license; }
     Vehicle* getAssignedVehicle() const { return assignedVehicle; }
     double getSalaryPerHour() const { return salaryPerHour; }
-    bool getIsAvailable() const { return isAvailable; }  // ƒŒ¡¿¬»“‹ ›“Œ“ Ã≈“Œƒ
-
+    bool getIsAvailable() const { return isAvailable; }
 };
 
 #endif

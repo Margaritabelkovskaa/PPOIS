@@ -1,18 +1,18 @@
-Accountant 4 5 → Payment, Salary, Invoice, Order, Driver
-Address 6 5 → GPSPosition
-BankAccount 4 6 →
+Accountant 4 4 → Payment, Salary, Invoice, Order, Driver
+Address 6 3 → GPSPosition
+BankAccount 4 4 →
 Cargo 6 3 →
-Client 3 6 →
+Client 3 4 →
 CompanyFinance 3 12 → ExpenseTracker, ProfitAnalyzer, TaxCalculator
 CustomerService 6 7 → Employee, Client, Order
 Dispatcher 4 5 → Order, Driver, Vehicle
 Driver 6 7 → DrivingLicense, Vehicle
 DrivingLicense 4 3 →
-Employee 8 4 →
-Exceptions 1 11 → TransportException, ClientException, OrderException, etc.
+Employee 8 3 →
+DangerousCargo 11 8 → Cargo
 ExpressDelivery 12 11 → Order, Client, Cargo
 FragileCargo 8 8 → Cargo
-GPSPosition 4 4 →
+GPSPosition 4 3 →
 HRManager 4 6 → Employee
 Insurance 7 4 → Vehicle
 Invoice 7 4 → Client, Order
@@ -22,11 +22,11 @@ MaintenanceRecord 7 3 → Vehicle, Mechanic
 Manager 5 6 → Driver, Vehicle, Order
 Mechanic 4 4 → Vehicle, MaintenanceRecord
 Metrics 10 9 → PerformanceMetric, FuelConsumption, TrafficInfo
-Order 11 7 → Client, Cargo, Driver, Vehicle
-Payment 7 4 → Client, Order
+Order 11 4 → Client, Cargo, Driver, Vehicle
+Payment 7 3 → Client, Order
 PerishableCargo 9 8 → Cargo
-Route 5 5 → Address, GPSPosition
-Salary 8 4 → Driver
+Route 6 3 → Address, GPSPosition
+Salary 8 3 → Driver
 ServiceManagement 7 10 → CustomerFeedback, ServiceQualityMonitor, LoyaltyProgram
 StorageUnit 8 7 → StorageZone, Rack
 TrackingSystem 2 5 → Vehicle, GPSPosition
@@ -34,7 +34,7 @@ Trailer 9 6 → Truck
 TransportCompany 6 7 → Client, Driver, Vehicle, Order
 Truck 3 4 → Vehicle
 Van 4 4 → Vehicle
-Vehicle 8 6 → Driver, GPSPosition
+Vehicle 8 5 → Driver, GPSPosition
 Warehouse 7 5 → Address, Cargo
 WarehouseManager 6 6 → Employee, Warehouse, Cargo, StorageUnit
 ExpenseTracker 2 4 →
@@ -69,4 +69,5 @@ InvalidLicenseException 0 0 →
 Ассоциации: 67
 
 Исключения: 12
+
 

@@ -7,7 +7,6 @@
 #include "Cargo.h"
 #include "DrivingLicense.h"
 
-// Основные тесты TransportCompany
 TEST(TransportCompanyTest, ConstructorAndGetters) {
     TransportCompany company("TestCompany");
     EXPECT_EQ(company.getCompanyName(), "TestCompany");

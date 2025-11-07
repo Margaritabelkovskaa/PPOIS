@@ -1,5 +1,5 @@
-#ifndef ROUTEOPTIMIZATION_H
-#define ROUTEOPTIMIZATION_H
+#ifndef ROUTEOPTIMIZER_H
+#define ROUTEOPTIMIZER_H
 
 #include <vector>
 #include <string>
@@ -26,7 +26,7 @@ public:
 
 class FuelCalculator {
 private:
-    double baseFuelConsumption; // λ/100κμ
+    double baseFuelConsumption;
     double currentFuelPrice;
     double vehicleLoadFactor;
 
@@ -56,4 +56,4 @@ public:
     double getAverageSpeed() const { return averageSpeed; }
 };
 
-#endif // ROUTEOPTIMIZATION_H
+#endif

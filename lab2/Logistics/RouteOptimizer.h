@@ -24,36 +24,5 @@ public:
     std::vector<GPSPosition> getWaypoints() const { return waypoints; }
 };
 
-class FuelCalculator {
-private:
-    double baseFuelConsumption;
-    double currentFuelPrice;
-    double vehicleLoadFactor;
-
-public:
-    FuelCalculator(double consumption, double fuelPrice);
-
-    double calculateFuelCost(double distance) const;
-    double calculateOptimalSpeed(double distance) const;
-    void updateFuelPrice(double newPrice);
-
-    double getCurrentFuelPrice() const { return currentFuelPrice; }
-};
-
-class DeliveryTimeEstimator {
-private:
-    double averageSpeed;
-    double loadingUnloadingTime;
-    double trafficCoefficient;
-
-public:
-    DeliveryTimeEstimator(double avgSpeed = 60.0, double loadTime = 0.5);
-
-    double estimateDeliveryTime(double distance, int stops = 1) const;
-    void adjustForTraffic(double coefficient);
-    void setLoadingTime(double time);
-
-    double getAverageSpeed() const { return averageSpeed; }
-};
-
 #endif
+

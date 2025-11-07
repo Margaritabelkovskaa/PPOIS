@@ -11,52 +11,43 @@ Client 3 5 →
 Employee 8 3 →
 DrivingLicense 4 2 →
 Driver 4 3 → DrivingLicense, Vehicle, Employee
+Manager 4 5 → Driver, Vehicle, Order
+Dispatcher 2 4 → Order, Driver, Vehicle,Employee
 LogisticsManager 2 5 → Employee, Route, Order, Warehouse
+WarehouseManager 3 5 → Warehouse, StorageUnit,Cargo
 Route 6 3 → Address, GPSPosition
 Vehicle 8 5 → Driver, GPSPosition
-
-
-CompanyFinance 3 12 → ExpenseTracker, ProfitAnalyzer, TaxCalculator
-CustomerService 6 7 → Employee, Client, Order
-Dispatcher 4 5 → Order, Driver, Vehicle
-
-ExpressDelivery 12 11 → Order, Client, Cargo
-
-
-Insurance 7 4 → Vehicle
-Invoice 7 4 → Client, Order
-
-Machine 5 5 → Vehicle
-MaintenanceRecord 7 3 → Vehicle, Mechanic
-Manager 5 6 → Driver, Vehicle, Order
-Mechanic 4 4 → Vehicle, MaintenanceRecord
-Metrics 10 9 → PerformanceMetric, FuelConsumption, TrafficInfo
+Warehouse 5 5 → Address, Cargo
+Van 3 3 → Vehicle
+Truck 3 3 → Vehicle
+Trailer 9 6 → Truck
+Machine 5 4 → Vehicle
+Insurance 6 3 → Vehicle
+Salary 8 3 → Driver
 Order 11 4 → Client, Cargo, Driver, Vehicle
 Payment 7 3 → Client, Order
-
-
-Salary 8 3 → Driver
-ServiceManagement 7 10 → CustomerFeedback, ServiceQualityMonitor, LoyaltyProgram
-StorageUnit 8 7 → StorageZone, Rack
-TrackingSystem 2 5 → Vehicle, GPSPosition
-Trailer 9 6 → Truck
-TransportCompany 6 7 → Client, Driver, Vehicle, Order
-Truck 3 4 → Vehicle
-Van 4 4 → Vehicle
-
-Warehouse 7 5 → Address, Cargo
-
+Invoice 7 3 → Client, Order
+TransportCompany 6 6 → Client, Driver, Vehicle, Order
 ExpenseTracker 2 4 →
-ProfitAnalyzer 4 7 →
+ProfitAnalyzer 3 5 →
 TaxCalculator 2 4 →
+TrackingSystem 2 4  → Vehicle, GPSPosition
+StorageUnit 4 3 → StorageZone, Rack
+StorageZone 3 2 →
+Rack 1 1 →
+MaintenanceRecord 7 2 → Vehicle, Mechanic
+ExpressDelivery 12 9 → Order, Client, Cargo
+RouteOptimizer 4 3 →  GPSPosition
+ FuelCalculator 3 3 → 
+ DeliveryTimeEstimator 3 3 → 
 PerformanceMetric 4 3 →
 FuelConsumption 4 3 →
 TrafficInfo 3 3 →
+Mechanic 1 3 → Vehicle, MaintenanceRecord,Employee
+CustomerService 3 5 → Employee, Client, Order
 CustomerFeedback 2 4 →
 ServiceQualityMonitor 3 4 →
 LoyaltyProgram 2 2 →
-StorageZone 5 2 →
-Rack 4 1 →
 
  Exceptions (12):
 TransportException 1 1 →
@@ -75,9 +66,10 @@ InvalidLicenseException 0 0 →
 
 Поведения : 175
 
-Ассоциации: 67
+Ассоциации: 66
 
 Исключения: 12
+
 
 
 

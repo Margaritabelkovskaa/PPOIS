@@ -5,55 +5,42 @@
 #include <vector>
 #include <memory>
 
-using namespace std;
-
 class Loan;
 class Reservation;
 
 class Reader {
 private:
-    int readerId;
-    string name;
-    string contactInfo;
-    string readerType;
-    int maxLoanLimit;
-    double totalFines;
+    int id;
+    std::string name;
+    std::string email;
+    std::string type;
+    int maxBooks;
+    double fines;
     
-    // Ассоциации
-    vector<shared_ptr<Loan>> currentLoans;
-    vector<shared_ptr<Loan>> loanHistory;
-    vector<shared_ptr<Reservation>> activeReservations;
-    vector<shared_ptr<Reservation>> reservationHistory;
+    std::vector<std::shared_ptr<Loan>> loans;
+    std::vector<std::shared_ptr<Reservation>> reservations;
 
 public:
-    Reader(int id, const string& name, const string& contactInfo, 
-           const string& readerType = "standard");
+    Reader(int id, const std::string& name, const std::string& email, 
+           const std::string& type = "standard");
     
-    // Уникальные поведения
+    // Основные методы
     void upgradeToPremium();
-    bool isValid() const;
-    bool canBorrowMoreBooks() const;
-    bool canMakeReservation() const;
-    int getActiveLoansCount() const;
-    int getActiveReservationsCount() const;
+    bool canBorrow() const;
+    void addLoan(const std::shared_ptr<Loan>& loan);
+    void addReservation(const std::shared_ptr<Reservation>& reservation);
     
-    // Управление ассоциациями
-    void addLoan(const shared_ptr<Loan>& loan);
-    void addReservation(const shared_ptr<Reservation>& reservation);
-    void returnLoan(const shared_ptr<Loan>& loan);
-    void cancelReservation(const shared_ptr<Reservation>& reservation);
-    
-    // Геттеры
-    int getReaderId() const;
-    string getName() const;
-    string getContactInfo() const;
-    string getReaderType() const;
-    int getMaxLoanLimit() const;
-    double getTotalFines() const;
-    
-    // Сеттеры
-    void setContactInfo(const string& contact);
-    void setTotalFines(double fines);
+
+    int getId() const { return id; }
+    std::string getName() const { return name; }
+    std::string getEmail() const { return email; }
+    std::string getType() const { return type; }
+    int getMaxBooks() const { return maxBooks; }
+    int getLoansCount() const { return loans.size(); }
+    double getFines() const { return fines; }
+
+    void setEmail(const std::string& newEmail) { email = newEmail; }
+    void setFines(double amount) { fines = amount; }
 };
 
 #endif

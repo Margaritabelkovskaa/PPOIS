@@ -1,8 +1,16 @@
-#include "RouteOptimization.h"
+#include "RouteOptimizer.h"
 #include <algorithm>
 #include <cmath>
 
-// RouteOptimizer
+namespace {
+    const double OPTIMIZATION_SPEED_KMH = 60.0;
+    const double MAX_OPTIMAL_SPEED_KMH = 80.0;
+    const double BASE_OPTIMAL_SPEED_KMH = 60.0;
+    const double SPEED_DISTANCE_FACTOR = 0.01;
+    const double DISTANCE_DIVISOR = 100.0;
+}
+
+
 RouteOptimizer::RouteOptimizer(const std::vector<GPSPosition>& points, bool avoidTraffic)
     : waypoints(points), trafficAvoidance(avoidTraffic), totalDistance(0.0), estimatedTime(0.0) {
 }
@@ -10,9 +18,9 @@ RouteOptimizer::RouteOptimizer(const std::vector<GPSPosition>& points, bool avoi
 void RouteOptimizer::calculateOptimalRoute() {
     totalDistance = 0.0;
     for (size_t i = 1; i < waypoints.size(); ++i) {
-        totalDistance += waypoints[i - 1].calculateDistance(waypoints[i]); // ÈÑÏÐÀÂËÅÍÎ
+        totalDistance += waypoints[i - 1].calculateDistance(waypoints[i]);
     }
-    estimatedTime = totalDistance / 60.0;
+    estimatedTime = totalDistance / OPTIMIZATION_SPEED_KMH;
 }
 
 void RouteOptimizer::addWaypoint(const GPSPosition& point) {
@@ -31,12 +39,13 @@ FuelCalculator::FuelCalculator(double consumption, double fuelPrice)
 }
 
 double FuelCalculator::calculateFuelCost(double distance) const {
-    double fuelNeeded = (baseFuelConsumption * distance / 100.0) * vehicleLoadFactor;
+    double fuelNeeded = (baseFuelConsumption * distance / DISTANCE_DIVISOR) * vehicleLoadFactor;
     return fuelNeeded * currentFuelPrice;
 }
 
 double FuelCalculator::calculateOptimalSpeed(double distance) const {
-    return std::min(80.0, 60.0 + distance * 0.01);
+    return std::min(MAX_OPTIMAL_SPEED_KMH, 
+                   BASE_OPTIMAL_SPEED_KMH + distance * SPEED_DISTANCE_FACTOR);
 }
 
 void FuelCalculator::updateFuelPrice(double newPrice) {

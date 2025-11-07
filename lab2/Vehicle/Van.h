@@ -21,4 +21,5 @@ public:
     bool getIsElectric() const { return isElectric; }
 };
 
-#endif#pragma once
+#endif
+

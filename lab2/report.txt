@@ -4,9 +4,9 @@ BankAccount 4 4 →
 GPSPosition 4 3 →
 HRManager 4 6 → Employee
 Cargo 6 3 →
-DangerousCargo 8 8 → Cargo
-PerishableCargo 10 8 → Cargo
-FragileCargo 8 8 → Cargo
+DangerousCargo 4 4 → Cargo
+PerishableCargo 4 4 → Cargo
+FragileCargo 4 4 → Cargo
 Client 3 5 →
 Employee 8 3 →
 DrivingLicense 4 2 →
@@ -36,7 +36,7 @@ StorageUnit 4 3 → StorageZone, Rack
 StorageZone 3 2 →
 Rack 1 1 →
 MaintenanceRecord 7 2 → Vehicle, Mechanic
-ExpressDelivery 12 9 → Order, Client, Cargo
+ExpressDelivery 5 5 → Order
 RouteOptimizer 4 3 →  GPSPosition
  FuelCalculator 3 3 → 
  DeliveryTimeEstimator 3 3 → 
@@ -62,13 +62,14 @@ VehicleNotAvailableException 0 0 →
 DriverNotAvailableException 0 0 →
 InvalidLicenseException 0 0 →
 
-Поля: 193
+Поля: 182
 
-Поведения : 175
+Поведения : 157
 
-Ассоциации: 66
+Ассоциации: 56
 
 Исключения: 12
+
 
 
 

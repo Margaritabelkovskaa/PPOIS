@@ -1,14 +1,27 @@
 #include "ReadingRoomStaff.h"
 
-ReadingRoomStaff::ReadingRoomStaff(int id, const string& name, const string& position,
-    double salary, const shared_ptr<Department>& department)
-    : Employee(id, name, position, salary, department) {
+ReadingRoomStaff::ReadingRoomStaff(int id, const std::string& name, const std::string& position,
+    double salary, const std::shared_ptr<Department>& department,
+    int maxReaders)
+    : Employee(id, name, position, salary, department), maxReaders(maxReaders) {
 }
 
-bool ReadingRoomStaff::canAssistReaders() const {
+bool ReadingRoomStaff::canProcessLoans() const {
+    return false; // Персонал читального зала не может обрабатывать займы
+}
+
+std::string ReadingRoomStaff::getRole() const {
+    return "Reading Room Staff";
+}
+
+bool ReadingRoomStaff::canAssistInReadingRoom() const {
     return true;
 }
 
-string ReadingRoomStaff::getReadingRoomInfo() const {
-    return "Reading Room Staff: " + getName();
+int ReadingRoomStaff::getMaxReaders() const {
+    return maxReaders;
+}
+
+bool ReadingRoomStaff::isRoomFull(int currentReaders) const {
+    return currentReaders >= maxReaders;
 }

@@ -1,47 +1,40 @@
-
+// Employee.h - базовый класс для всех сотрудников
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
 #include <string>
-#include <vector>
 #include <memory>
 
-using namespace std;
-
 class Department;
-class Loan;
 
 class Employee {
-private:
+protected:
     int employeeId;
-    string name;
-    string position;
-    string hireDate;
+    std::string name;
+    std::string position;
     double salary;
-    shared_ptr<Department> department;
-    vector<shared_ptr<Loan>> processedLoans;
-    int yearsOfService;
+    std::shared_ptr<Department> department;
 
 public:
-    Employee(int id, const string& name, const string& position,
-        double salary, const shared_ptr<Department>& department);
+    Employee(int id, const std::string& name, const std::string& position,
+        double salary, const std::shared_ptr<Department>& department);
+    virtual ~Employee() = default;
 
-    int calculateYearsOfService() const;
-    bool isEligibleForPromotion() const;
-    double calculateBonus() const;
-    bool validateEmployeeData() const;
-    bool canProcessLoan() const;
-    double calculateProductivity() const;
+    // Общие методы для всех сотрудников
+    virtual bool canProcessLoans() const = 0;
+    virtual std::string getRole() const = 0;
 
-    void addProcessedLoan(const shared_ptr<Loan>& loan);
-    void setDepartment(const shared_ptr<Department>& dept);
-    void updatePosition(const string& newPosition);
-
+    // Геттеры
     int getEmployeeId() const;
-    string getName() const;
-    string getPosition() const;
+    std::string getName() const;
+    std::string getPosition() const;
     double getSalary() const;
-    int getProcessedLoansCount() const;
+    std::shared_ptr<Department> getDepartment() const;
+
+    // Сеттеры
+    void setPosition(const std::string& newPosition);
+    void setSalary(double newSalary);
+    void setDepartment(const std::shared_ptr<Department>& dept);
 };
 
 #endif

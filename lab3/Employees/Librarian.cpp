@@ -1,14 +1,22 @@
 #include "Librarian.h"
 
-Librarian::Librarian(int id, const string& name, const string& position,
-    double salary, const shared_ptr<Department>& department)
+Librarian::Librarian(int id, const std::string& name, const std::string& position,
+    double salary, const std::shared_ptr<Department>& department)
     : Employee(id, name, position, salary, department) {
 }
 
-bool Librarian::canProcessLoan() const {
+bool Librarian::canProcessLoans() const {
+    return true; // Библиотекари могут обрабатывать займы
+}
+
+std::string Librarian::getRole() const {
+    return "Librarian";
+}
+
+bool Librarian::canManageCatalog() const {
     return true;
 }
 
-string Librarian::getLibrarianInfo() const {
-    return "Librarian: " + getName();
+bool Librarian::canAssistReaders() const {
+    return true;
 }

@@ -1,40 +1,48 @@
 #include "FineCalculator.h"
+#include <stdexcept>
 
-double FineCalculator::calculateLateFine(const shared_ptr<LibraryItem>& item, int daysLate) {
-    if (!item || daysLate <= 0) return 0.0;
+// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃС‚Р°РЅС‚
+const double FineCalculator::DAILY_LATE_PERCENTAGE = 0.01; 
 
-    double dailyRate = 10.0; // базовая ставка
+const double FineCalculator::MINOR_DAMAGE_PERCENTAGE = 0.1;    
+const double FineCalculator::MODERATE_DAMAGE_PERCENTAGE = 0.3;  
+const double FineCalculator::SEVERE_DAMAGE_PERCENTAGE = 0.5;   
+const double FineCalculator::LOST_ITEM_PERCENTAGE = 1.0;       
 
-    // Разные ставки для разных типов
-    if (dynamic_pointer_cast<Book>(item)) dailyRate = 15.0;
-    if (dynamic_pointer_cast<EBook>(item)) dailyRate = 5.0;
-    if (dynamic_pointer_cast<Audiobook>(item)) dailyRate = 5.0;
-    if (dynamic_pointer_cast<Magazine>(item)) dailyRate = 8.0;
-    if (dynamic_pointer_cast<StudentBook>(item)) dailyRate = 20.0;
-    if (dynamic_pointer_cast<Article>(item)) dailyRate = 12.0;
-
-    return daysLate * dailyRate;
+double FineCalculator::calculateLateFine(const std::shared_ptr<LibraryItem>& item, int daysLate) {
+    if (!item || daysLate <= 0) {
+        return 0.0;
+    }
+    
+    double replacementCost = item->getReplacementCost();
+    return daysLate * (replacementCost * DAILY_LATE_PERCENTAGE);
 }
 
-double FineCalculator::calculateDamageFine(const shared_ptr<LibraryItem>& item, const string& damageType) {
-    if (!item) return 0.0;
+double FineCalculator::calculateDamageFine(const std::shared_ptr<LibraryItem>& item, const std::string& damageType) {
+    if (!item) {
+        return 0.0;
+    }
 
-    double baseFine = 0.0;
+    double replacementCost = item->getReplacementCost();
+    double percentage = 0.0;
 
-    if (damageType == "minor") baseFine = 100.0;
-    else if (damageType == "moderate") baseFine = 300.0;
-    else if (damageType == "severe") baseFine = 500.0;
-    else if (damageType == "lost") baseFine = 1000.0;
-    else return 0.0;
+    if (damageType == "minor") {
+        percentage = MINOR_DAMAGE_PERCENTAGE;
+    } else if (damageType == "moderate") {
+        percentage = MODERATE_DAMAGE_PERCENTAGE;
+    } else if (damageType == "severe") {
+        percentage = SEVERE_DAMAGE_PERCENTAGE;
+    } else {
+        throw std::invalid_argument("Unknown damage type: " + damageType);
+    }
 
-    // Умножаем на коэффициент типа
-    double multiplier = 1.0;
-    if (dynamic_pointer_cast<StudentBook>(item)) multiplier = 2.0;
-    if (dynamic_pointer_cast<Book>(item)) multiplier = 1.5;
-    if (dynamic_pointer_cast<Article>(item)) multiplier = 1.2;
-    if (dynamic_pointer_cast<Magazine>(item)) multiplier = 0.8;
-    if (dynamic_pointer_cast<EBook>(item)) multiplier = 0.5;
-    if (dynamic_pointer_cast<Audiobook>(item)) multiplier = 0.5;
+    return replacementCost * percentage;
+}
 
-    return baseFine * multiplier;
+double FineCalculator::calculateLostItemFine(const std::shared_ptr<LibraryItem>& item) {
+    if (!item) {
+        return 0.0;
+    }
+    
+    return item->getReplacementCost() * LOST_ITEM_PERCENTAGE;
 }

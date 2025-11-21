@@ -1,46 +1,40 @@
+
 #ifndef READER_H
 #define READER_H
 
 #include <string>
-#include <vector>
 #include <memory>
+#include "BankAccount.h"
 
-class Loan;
-class Reservation;
+using namespace std;
 
 class Reader {
 private:
-    int id;
-    std::string name;
-    std::string email;
-    std::string type;
-    int maxBooks;
-    double fines;
-    
-    std::vector<std::shared_ptr<Loan>> loans;
-    std::vector<std::shared_ptr<Reservation>> reservations;
+    int readerId;
+    string name;
+    string contactInfo;
+    string readerType; // "standard", "premium", "vip"
+    int maxLoanLimit;
+    shared_ptr<BankAccount> bankAccount;
 
 public:
-    Reader(int id, const std::string& name, const std::string& email, 
-           const std::string& type = "standard");
-    
-    // Основные методы
-    void upgradeToPremium();
-    bool canBorrow() const;
-    void addLoan(const std::shared_ptr<Loan>& loan);
-    void addReservation(const std::shared_ptr<Reservation>& reservation);
-    
+    Reader(int id, const string& name, const string& contactInfo,
+        const string& readerType = "standard");
 
-    int getId() const { return id; }
-    std::string getName() const { return name; }
-    std::string getEmail() const { return email; }
-    std::string getType() const { return type; }
-    int getMaxBooks() const { return maxBooks; }
-    int getLoansCount() const { return loans.size(); }
-    double getFines() const { return fines; }
+    int getReaderId() const;
+    string getName() const;
+    string getContactInfo() const;
+    string getReaderType() const;
+    int getMaxLoanLimit() const;
+    shared_ptr<BankAccount> getBankAccount() const;
 
-    void setEmail(const std::string& newEmail) { email = newEmail; }
-    void setFines(double amount) { fines = amount; }
+    void setContactInfo(const string& contact);
+    void setUpgradeToPremium();
+    bool isValid() const;
+
+    void setBankAccount(const shared_ptr<BankAccount>& account);
+    bool hasBankAccount() const;
+    bool canPayFine(double amount) const;
 };
 
 #endif

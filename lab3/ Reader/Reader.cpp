@@ -1,37 +1,42 @@
 #include "Reader.h"
-#include "Loan.h"
-#include "Reservation.h"
 
-Reader::Reader(int id, const std::string& name, const std::string& email,
-               const std::string& type)
-    : id(id), name(name), email(email), type(type), fines(0) {
-    
-    if (type == "premium") {
-        maxBooks = 10;
-    } else if (type == "vip") {
-        maxBooks = 20;
-    } else {
-        maxBooks = 5;
-    }
+Reader::Reader(int id, const string& name, const string& contactInfo,
+    const string& readerType)
+    : readerId(id), name(name), contactInfo(contactInfo),
+    readerType(readerType), maxLoanLimit(5) {
+
+    if (readerType == "premium") maxLoanLimit = 10;
+    if (readerType == "vip") maxLoanLimit = 20;
 }
 
-void Reader::upgradeToPremium() {
-    type = "premium";
-    maxBooks = 10;
+int Reader::getReaderId() const { return readerId; }
+string Reader::getName() const { return name; }
+string Reader::getContactInfo() const { return contactInfo; }
+string Reader::getReaderType() const { return readerType; }
+int Reader::getMaxLoanLimit() const { return maxLoanLimit; }
+shared_ptr<BankAccount> Reader::getBankAccount() const { return bankAccount; }
+
+void Reader::setContactInfo(const string& contact) {
+    contactInfo = contact;
 }
 
-bool Reader::canBorrow() const {
-    return loans.size() < maxBooks;
+void Reader::setUpgradeToPremium() {
+    readerType = "premium";
+    maxLoanLimit = 10;
 }
 
-void Reader::addLoan(const std::shared_ptr<Loan>& loan) {
-    if (canBorrow()) {
-        loans.push_back(loan);
-    }
+bool Reader::isValid() const {
+    return readerId > 0 && !name.empty() && !contactInfo.empty();
 }
 
-void Reader::addReservation(const std::shared_ptr<Reservation>& reservation) {
-    if (reservations.size() < 3) {
-        reservations.push_back(reservation);
-    }
+void Reader::setBankAccount(const shared_ptr<BankAccount>& account) {
+    bankAccount = account;
+}
+
+bool Reader::hasBankAccount() const {
+    return bankAccount != nullptr && bankAccount->getIsActive();
+}
+
+bool Reader::canPayFine(double amount) const {
+    return hasBankAccount() && bankAccount->canWithdraw(amount);
 }

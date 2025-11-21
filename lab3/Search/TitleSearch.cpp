@@ -1,41 +1,39 @@
-// [file name]: TitleSearch.cpp
 #include "TitleSearch.h"
+#include "Catalog.h"
 #include <algorithm>
+#include <cctype>
 
-TitleSearch::TitleSearch(const shared_ptr<Catalog>& catalog)
+TitleSearch::TitleSearch(const std::shared_ptr<Catalog>& catalog)
     : SearchEngine(catalog) {
 }
 
-vector<shared_ptr<Book>> TitleSearch::search(const string& query) const {
-    return searchPartial(query);
+std::vector<std::shared_ptr<LibraryItem>> TitleSearch::search(const std::string& query) const {
+    if (!catalog || query.empty()) return {};
+
+    auto allItems = catalog->getAllItems();
+    std::vector<std::shared_ptr<LibraryItem>> result;
+    std::string lowerQuery = toLowercase(query);
+
+    for (const auto& item : allItems) {
+        if (containsIgnoreCase(item->getTitle(), lowerQuery)) {
+            result.push_back(item);
+        }
+    }
+
+    return result;
 }
 
-string TitleSearch::getSearchType() const {
+bool TitleSearch::containsIgnoreCase(const std::string& text, const std::string& searchText) const {
+    std::string lowerText = toLowercase(text);
+    return lowerText.find(searchText) != std::string::npos;
+}
+
+std::string TitleSearch::toLowercase(const std::string& str) const {
+    std::string result = str;
+    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+std::string TitleSearch::getSearchType() const {
     return "Title Search";
-}
-
-vector<shared_ptr<Book>> TitleSearch::searchPartial(const string& partialTitle) const {
-    vector<shared_ptr<Book>> result;
-    if (!catalog || partialTitle.empty()) return result;
-
-    auto allBooks = catalog->getAllBooks();
-    for (const auto& book : allBooks) {
-        if (book && book->getTitle().find(partialTitle) != string::npos) {
-            result.push_back(book);
-        }
-    }
-    return result;
-}
-
-vector<shared_ptr<Book>> TitleSearch::searchExact(const string& exactTitle) const {
-    vector<shared_ptr<Book>> result;
-    if (!catalog || exactTitle.empty()) return result;
-
-    auto allBooks = catalog->getAllBooks();
-    for (const auto& book : allBooks) {
-        if (book && book->getTitle() == exactTitle) {
-            result.push_back(book);
-        }
-    }
-    return result;
 }

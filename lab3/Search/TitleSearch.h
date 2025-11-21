@@ -6,14 +6,13 @@
 
 class TitleSearch : public SearchEngine {
 public:
-    TitleSearch(const shared_ptr<Catalog>& catalog);
+    TitleSearch(const std::shared_ptr<Catalog>& catalog);
+    std::vector<std::shared_ptr<LibraryItem>> search(const std::string& query) const override;
+    std::string getSearchType() const override;
 
-    vector<shared_ptr<Book>> search(const string& query) const override;
-    string getSearchType() const override;
-
-    vector<shared_ptr<Book>> searchPartial(const string& partialTitle) const;
-    vector<shared_ptr<Book>> searchExact(const string& exactTitle) const;
+private:
+    bool containsIgnoreCase(const std::string& text, const std::string& searchText) const;
+    std::string toLowercase(const std::string& str) const;
 };
 
 #endif
-

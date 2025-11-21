@@ -1,19 +1,25 @@
-// [file name]: GenreSearch.h
 #ifndef GENRESEARCH_H
 #define GENRESEARCH_H
 
 #include "SearchEngine.h"
 
+class Book;
+class StudentBook;
+
 class GenreSearch : public SearchEngine {
 public:
-    GenreSearch(const shared_ptr<Catalog>& catalog);
+    GenreSearch(const std::shared_ptr<Catalog>& catalog);
+    std::vector<std::shared_ptr<LibraryItem>> search(const std::string& query) const override;
+    std::string getSearchType() const override;
 
-    vector<shared_ptr<Book>> search(const string& query) const override;
-    string getSearchType() const override;
-
-    vector<shared_ptr<Book>> searchByGenreName(const string& genreName) const;
-    vector<shared_ptr<Book>> searchRareGenres() const;
+private:
+    bool hasMatchingGenre(const std::shared_ptr<LibraryItem>& item,
+        const std::string& lowerQuery) const;
+    bool checkBookGenre(const std::shared_ptr<Book>& book,
+        const std::string& lowerQuery) const;
+    bool checkStudentBookGenre(const std::shared_ptr<StudentBook>& studentBook,
+        const std::string& lowerQuery) const;
+    std::string toLowercase(const std::string& str) const;
 };
 
 #endif
-

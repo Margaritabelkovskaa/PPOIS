@@ -1,0 +1,46 @@
+#include <gtest/gtest.h>
+#include <memory>
+#include "Author.h"
+TEST(AuthorTest, BiographyOperations) {
+    auto language = std::make_shared<Language>("en", "English");
+    Author author("Test Author", language);
+
+    // Тестируем установку и получение биографии
+    EXPECT_TRUE(author.getBiography().empty());
+
+    author.setBiography("Famous writer with many awards");
+    EXPECT_EQ(author.getBiography(), "Famous writer with many awards");
+
+    // Изменение биографии
+    author.setBiography("New updated biography");
+    EXPECT_EQ(author.getBiography(), "New updated biography");
+}
+
+TEST(AuthorTest, LanguageOperations) {
+    auto english = std::make_shared<Language>("en", "English");
+    auto french = std::make_shared<Language>("fr", "French");
+
+    Author author("Test Author", english);
+
+    // Проверяем начальный язык
+    EXPECT_EQ(author.getNativeLanguage(), english);
+    EXPECT_EQ(author.getNativeLanguage()->getCode(), "en");
+
+    // Меняем язык
+    author.setNativeLanguage(french);
+    EXPECT_EQ(author.getNativeLanguage(), french);
+    EXPECT_EQ(author.getNativeLanguage()->getCode(), "fr");
+
+    // Устанавливаем nullptr
+    author.setNativeLanguage(nullptr);
+    EXPECT_EQ(author.getNativeLanguage(), nullptr);
+}
+
+TEST(AuthorTest, AuthorWithoutLanguage) {
+    // Автор без указания языка
+    Author author("Anonymous");
+
+    EXPECT_EQ(author.getName(), "Anonymous");
+    EXPECT_EQ(author.getNativeLanguage(), nullptr);
+    EXPECT_TRUE(author.getBiography().empty());
+}

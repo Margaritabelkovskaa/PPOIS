@@ -1,0 +1,70 @@
+#include <gtest/gtest.h>
+#include "Reader.h"
+TEST(ReaderTest, ConstructorAndGetters) {
+    Reader reader(1, "John Smith", "john@email.com", "standard");
+
+    EXPECT_EQ(reader.getReaderId(), 1);
+    EXPECT_EQ(reader.getName(), "John Smith");
+    EXPECT_EQ(reader.getContactInfo(), "john@email.com");
+    EXPECT_EQ(reader.getReaderType(), "standard");
+    EXPECT_EQ(reader.getMaxLoanLimit(), 5);
+    EXPECT_TRUE(reader.isValid());
+}
+
+TEST(ReaderTest, DifferentReaderTypes) {
+    Reader standard(1, "Alice", "alice@email.com", "standard");
+    Reader premium(2, "Bob", "bob@email.com", "premium");
+    Reader vip(3, "Charlie", "charlie@email.com", "vip");
+
+    EXPECT_EQ(standard.getMaxLoanLimit(), 5);
+    EXPECT_EQ(premium.getMaxLoanLimit(), 10);
+    EXPECT_EQ(vip.getMaxLoanLimit(), 20);
+}
+
+TEST(ReaderTest, SetContactInfo) {
+    Reader reader(1, "John", "old@email.com");
+
+    reader.setContactInfo("new@email.com");
+    EXPECT_EQ(reader.getContactInfo(), "new@email.com");
+}
+
+TEST(ReaderTest, UpgradeToPremium) {
+    Reader reader(1, "John", "john@email.com", "standard");
+
+    EXPECT_EQ(reader.getReaderType(), "standard");
+    EXPECT_EQ(reader.getMaxLoanLimit(), 5);
+
+    reader.setUpgradeToPremium();
+
+    EXPECT_EQ(reader.getReaderType(), "premium");
+    EXPECT_EQ(reader.getMaxLoanLimit(), 10);
+}
+
+TEST(ReaderTest, Validation) {
+    Reader validReader(1, "John", "john@email.com");
+    Reader invalidId(0, "John", "john@email.com");
+    Reader invalidName(2, "", "john@email.com");
+    Reader invalidContact(3, "John", "");
+
+    EXPECT_TRUE(validReader.isValid());
+    EXPECT_FALSE(invalidId.isValid());
+    EXPECT_FALSE(invalidName.isValid());
+    EXPECT_FALSE(invalidContact.isValid());
+}
+
+TEST(ReaderTest, DefaultReaderType) {
+    Reader reader(1, "John", "john@email.com");
+
+    EXPECT_EQ(reader.getReaderType(), "standard");
+    EXPECT_EQ(reader.getMaxLoanLimit(), 5);
+}
+
+TEST(ReaderTest, BankAccountMethods) {
+    Reader reader(1, "John", "john@email.com");
+
+    // Проверяем методы банковского счета
+    EXPECT_FALSE(reader.hasBankAccount());
+    EXPECT_FALSE(reader.canPayFine(10.0));
+
+    // Можно добавить тесты с реальным BankAccount когда он будет доступен
+}

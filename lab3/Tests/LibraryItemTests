@@ -1,0 +1,126 @@
+#include <gtest/gtest.h>
+#include <memory>
+#include "Author.h"
+#include "Publisher.h"
+#include "Genre.h"
+#include "LibraryItem.h"
+#include "Language.h"
+#include "Book.h"
+#include "Reader.h"
+TEST(LibraryItemTest, VirtualMethodCoverage) {
+    // Используем существующий класс Book для тестирования
+    auto author = std::make_shared<Author>("Test Author");
+    auto genre = std::make_shared<Genre>("Test Genre", false);
+    auto publisher = std::make_shared<Publisher>("Test Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book book("TEST001", "Test Book", author, 2020, genre, publisher, language, 15.0);
+
+    // Тестируем виртуальные методы через Book
+    EXPECT_EQ(book.getLoanDuration(), 30);
+    EXPECT_EQ(book.getMaterialType(), "book");
+
+    // Тестируем базовые методы LibraryItem
+    EXPECT_EQ(book.getID(), "TEST001");
+    EXPECT_EQ(book.getTitle(), "Test Book");
+    EXPECT_DOUBLE_EQ(book.getReplacementCost(), 15.0);
+    EXPECT_TRUE(book.canBeBorrowed());
+}
+
+TEST(LibraryItemTest, CostEdgeCases) {
+    auto author = std::make_shared<Author>("Test Author");
+    auto genre = std::make_shared<Genre>("Test Genre", false);
+    auto publisher = std::make_shared<Publisher>("Test Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book item("COST001", "Cost Test", author, 2020, genre, publisher, language);
+
+    // Тестируем граничные значения стоимости
+    item.setReplacementCost(0.0);
+    EXPECT_DOUBLE_EQ(item.getReplacementCost(), 0.0);
+
+    item.setReplacementCost(999999.99);
+    EXPECT_DOUBLE_EQ(item.getReplacementCost(), 999999.99);
+
+    item.setReplacementCost(-100.0); // Отрицательная стоимость
+    EXPECT_DOUBLE_EQ(item.getReplacementCost(), -100.0);
+}
+
+TEST(LibraryItemTest, MultipleAvailabilityChanges) {
+    auto author = std::make_shared<Author>("Test Author");
+    auto genre = std::make_shared<Genre>("Test Genre", false);
+    auto publisher = std::make_shared<Publisher>("Test Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book item("AVAIL001", "Availability Test", author, 2020, genre, publisher, language);
+
+    // Многократное изменение доступности
+    EXPECT_TRUE(item.checkAvailability());
+
+    item.setAvailable(false);
+    EXPECT_FALSE(item.checkAvailability());
+    EXPECT_FALSE(item.canBeBorrowed());
+
+    item.setAvailable(true);
+    EXPECT_TRUE(item.checkAvailability());
+    EXPECT_TRUE(item.canBeBorrowed());
+
+    item.setAvailable(false);
+    EXPECT_FALSE(item.checkAvailability());
+}
+
+TEST(LibraryItemTest, StringOperations) {
+    auto author = std::make_shared<Author>("Test Author");
+    auto genre = std::make_shared<Genre>("Test Genre", false);
+    auto publisher = std::make_shared<Publisher>("Test Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    // Тестируем различные строковые ID и названия
+    Book item1("ID_WITH_UNDERSCORE", "Title With Spaces", author, 2020, genre, publisher, language);
+    Book item2("ID-123-456", "Title-With-Dashes", author, 2020, genre, publisher, language);
+    Book item3("id_with_numbers123", "Title123", author, 2020, genre, publisher, language);
+
+    EXPECT_EQ(item1.getID(), "ID_WITH_UNDERSCORE");
+    EXPECT_EQ(item1.getTitle(), "Title With Spaces");
+
+    EXPECT_EQ(item2.getID(), "ID-123-456");
+    EXPECT_EQ(item2.getTitle(), "Title-With-Dashes");
+
+    EXPECT_EQ(item3.getID(), "id_with_numbers123");
+    EXPECT_EQ(item3.getTitle(), "Title123");
+}
+
+TEST(LibraryItemTest, InheritanceBehavior) {
+    auto author = std::make_shared<Author>("Test Author");
+    auto genre = std::make_shared<Genre>("Test Genre", false);
+    auto publisher = std::make_shared<Publisher>("Test Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    // Тестируем полиморфное поведение
+    LibraryItem* item = new Book("POLY001", "Polymorphic Book", author, 2020, genre, publisher, language);
+
+    // Вызываем виртуальные методы через базовый указатель
+    EXPECT_EQ(item->getLoanDuration(), 30);
+    EXPECT_EQ(item->getMaterialType(), "book");
+    EXPECT_TRUE(item->canBeBorrowed());
+
+    delete item;
+}
+// Полные тесты для класса BankAccount
+TEST(BankAccountTest, ConstructorAndGetters) {
+    BankAccount account("123456789", "Test Bank", 1000.0);
+
+    EXPECT_EQ(account.getAccountNumber(), "123456789");
+    EXPECT_EQ(account.getBankName(), "Test Bank");
+    EXPECT_DOUBLE_EQ(account.getBalance(), 1000.0);
+    EXPECT_TRUE(account.getIsActive());
+}
+
+TEST(BankAccountTest, ConstructorWithZeroBalance) {
+    BankAccount account("123456789", "Test Bank", 0.0);
+
+    EXPECT_EQ(account.getAccountNumber(), "123456789");
+    EXPECT_EQ(account.getBankName(), "Test Bank");
+    EXPECT_DOUBLE_EQ(account.getBalance(), 0.0);
+    EXPECT_TRUE(account.getIsActive());
+}

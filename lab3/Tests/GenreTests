@@ -1,0 +1,31 @@
+#include <gtest/gtest.h>
+#include <memory>
+
+#include "Genre.h"
+TEST(GenreTest, EdgeCases) {
+    // Жанр с возрастными ограничениями
+    Genre restricted("Adult", true);
+    EXPECT_TRUE(restricted.isRestricted());
+    EXPECT_FALSE(restricted.canBeBorrowedByStudent());
+    EXPECT_TRUE(restricted.requiresAdultVerification());
+
+    // Жанр без ограничений
+    Genre unrestricted("Children", false);
+    EXPECT_FALSE(unrestricted.isRestricted());
+    EXPECT_TRUE(unrestricted.canBeBorrowedByStudent());
+    EXPECT_FALSE(unrestricted.requiresAdultVerification());
+}
+
+TEST(GenreTest, MultipleGenres) {
+    Genre genre1("Science Fiction", false);
+    Genre genre2("Horror", true);
+    Genre genre3("Romance", false);
+
+    EXPECT_EQ(genre1.getGenreName(), "Science Fiction");
+    EXPECT_EQ(genre2.getGenreName(), "Horror");
+    EXPECT_EQ(genre3.getGenreName(), "Romance");
+
+    EXPECT_FALSE(genre1.isRestricted());
+    EXPECT_TRUE(genre2.isRestricted());
+    EXPECT_FALSE(genre3.isRestricted());
+}

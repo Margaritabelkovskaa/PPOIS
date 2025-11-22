@@ -1,40 +1,35 @@
 #include "FineCalculator.h"
 
+const double BOOK_PENALTY_RATE = 1.5;
+const double ARTICLE_PENALTY_RATE = 1.2;
+const double MAGAZINE_PENALTY_RATE = 0.8;
+const double DEFAULT_PENALTY_RATE = 1.0;
+
+const double MINOR_DAMAGE_RATE = 0.1;
+const double SEVERE_DAMAGE_RATE = 0.5;
+const double LOST_ITEM_RATE = 1.0;
+
 double FineCalculator::calculateLateFine(const shared_ptr<LibraryItem>& item, int daysLate) {
     if (!item || daysLate <= 0) return 0.0;
 
-    double dailyRate = 10.0; // базовая ставка
+    double penaltyRate = DEFAULT_PENALTY_RATE;
 
-    // Разные ставки для разных типов
-    if (dynamic_pointer_cast<Book>(item)) dailyRate = 15.0;
-    if (dynamic_pointer_cast<EBook>(item)) dailyRate = 5.0;
-    if (dynamic_pointer_cast<Audiobook>(item)) dailyRate = 5.0;
-    if (dynamic_pointer_cast<Magazine>(item)) dailyRate = 8.0;
-    if (dynamic_pointer_cast<StudentBook>(item)) dailyRate = 20.0;
-    if (dynamic_pointer_cast<Article>(item)) dailyRate = 12.0;
+     if (dynamic_pointer_cast<Book>(item)) penaltyRate = BOOK_PENALTY_RATE;
+    else if (dynamic_pointer_cast<Article>(item)) penaltyRate = ARTICLE_PENALTY_RATE;
+    else if (dynamic_pointer_cast<Magazine>(item)) penaltyRate = MAGAZINE_PENALTY_RATE;
 
-    return daysLate * dailyRate;
+    return item->getReplacementCost() * penaltyRate * daysLate;
 }
 
 double FineCalculator::calculateDamageFine(const shared_ptr<LibraryItem>& item, const string& damageType) {
     if (!item) return 0.0;
 
-    double baseFine = 0.0;
+    double damageRate = 0.0;
 
-    if (damageType == "minor") baseFine = 100.0;
-    else if (damageType == "moderate") baseFine = 300.0;
-    else if (damageType == "severe") baseFine = 500.0;
-    else if (damageType == "lost") baseFine = 1000.0;
+    if (damageType == "minor") damageRate = MINOR_DAMAGE_RATE;
+    else if (damageType == "severe") damageRate = SEVERE_DAMAGE_RATE;
+    else if (damageType == "lost") damageRate = LOST_ITEM_RATE;
     else return 0.0;
 
-    // Умножаем на коэффициент типа
-    double multiplier = 1.0;
-    if (dynamic_pointer_cast<StudentBook>(item)) multiplier = 2.0;
-    if (dynamic_pointer_cast<Book>(item)) multiplier = 1.5;
-    if (dynamic_pointer_cast<Article>(item)) multiplier = 1.2;
-    if (dynamic_pointer_cast<Magazine>(item)) multiplier = 0.8;
-    if (dynamic_pointer_cast<EBook>(item)) multiplier = 0.5;
-    if (dynamic_pointer_cast<Audiobook>(item)) multiplier = 0.5;
-
-    return baseFine * multiplier;
+    return item->getReplacementCost() * damageRate;
 }

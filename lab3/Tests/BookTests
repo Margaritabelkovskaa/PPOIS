@@ -1,0 +1,135 @@
+#include <gtest/gtest.h>
+#include <memory>
+#include "Author.h"
+#include "Publisher.h"
+#include "Genre.h"
+#include "LibraryItem.h"
+#include "Language.h"
+#include "Book.h"
+
+TEST(BookTest, ConstructorAndGetters) {
+    auto author = std::make_shared<Author>("George Orwell");
+    auto genre = std::make_shared<Genre>("Dystopian", false);
+    auto publisher = std::make_shared<Publisher>("Secker & Warburg", "London");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book book("978-0451524935", "1984", author, 1949, genre, publisher, language, 15.99);
+
+    EXPECT_EQ(book.getISBN(), "978-0451524935");
+    EXPECT_EQ(book.getTitle(), "1984");
+    EXPECT_EQ(book.getAuthor(), author);
+    EXPECT_EQ(book.getPublicationYear(), 1949);
+    EXPECT_EQ(book.getGenre(), genre);
+    EXPECT_EQ(book.getPublisher(), publisher);
+    EXPECT_EQ(book.getBookLanguage(), language);
+    EXPECT_DOUBLE_EQ(book.getReplacementCost(), 15.99);
+}
+
+TEST(BookTest, CanBeBorrowed) {
+    auto author = std::make_shared<Author>("Author");
+    auto genre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book book("123", "Test Book", author, 2020, genre, publisher, language);
+
+    EXPECT_TRUE(book.canBeBorrowed());
+    EXPECT_TRUE(book.checkAvailability());
+
+    book.setAvailable(false);
+    EXPECT_FALSE(book.canBeBorrowed());
+    EXPECT_FALSE(book.checkAvailability());
+}
+
+TEST(BookTest, LoanDuration) {
+    auto author = std::make_shared<Author>("Author");
+    auto genre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book book("123", "Test Book", author, 2020, genre, publisher, language);
+
+    EXPECT_EQ(book.getLoanDuration(), 30);
+}
+
+TEST(BookTest, GetMaterialType) {
+    auto author = std::make_shared<Author>("Author");
+    auto genre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book book("123", "Test Book", author, 2020, genre, publisher, language);
+
+    EXPECT_EQ(book.getMaterialType(), "book");
+}
+
+TEST(BookTest, IsTranslation) {
+    auto english = std::make_shared<Language>("en", "English");
+    auto russian = std::make_shared<Language>("ru", "Russian");
+    auto french = std::make_shared<Language>("fr", "French");
+
+    auto englishAuthor = std::make_shared<Author>("English Author", english);
+    auto russianAuthor = std::make_shared<Author>("Russian Author", russian);
+
+    auto genre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+
+    // Книга на родном языке автора - не перевод
+    Book nativeBook("1", "Native", englishAuthor, 2020, genre, publisher, english);
+    EXPECT_FALSE(nativeBook.isTranslation());
+
+    // Книга на другом языке - перевод
+    Book translatedBook("2", "Translated", englishAuthor, 2020, genre, publisher, russian);
+    EXPECT_TRUE(translatedBook.isTranslation());
+
+    // Автор без указания родного языка
+    auto authorNoLanguage = std::make_shared<Author>("No Language Author");
+    Book bookNoLang("3", "No Lang", authorNoLanguage, 2020, genre, publisher, english);
+    EXPECT_FALSE(bookNoLang.isTranslation());
+
+    // Книга без указания языка
+    Book bookNoBookLanguage("4", "No Book Lang", englishAuthor, 2020, genre, publisher, nullptr);
+    EXPECT_FALSE(bookNoBookLanguage.isTranslation());
+}
+
+TEST(BookTest, MatchesReaderLanguage) {
+    auto english = std::make_shared<Language>("en", "English");
+    auto russian = std::make_shared<Language>("ru", "Russian");
+    auto french = std::make_shared<Language>("fr", "French");
+
+    auto author = std::make_shared<Author>("Author");
+    auto genre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+
+    Book englishBook("1", "English Book", author, 2020, genre, publisher, english);
+
+    // Совпадающие языки
+    EXPECT_TRUE(englishBook.matchesReaderLanguage(english));
+
+    // Разные языки
+    EXPECT_FALSE(englishBook.matchesReaderLanguage(russian));
+
+    // Читатель без указания языка (принимаем как совместимый)
+    EXPECT_TRUE(englishBook.matchesReaderLanguage(nullptr));
+
+    // Книга без указания языка (принимаем как совместимый)
+    Book noLanguageBook("2", "No Language Book", author, 2020, genre, publisher, nullptr);
+    EXPECT_TRUE(noLanguageBook.matchesReaderLanguage(english));
+    EXPECT_TRUE(noLanguageBook.matchesReaderLanguage(nullptr));
+}
+
+TEST(BookTest, AgeRestrictedGenre) {
+    auto author = std::make_shared<Author>("Author");
+    auto restrictedGenre = std::make_shared<Genre>("Horror", true);
+    auto normalGenre = std::make_shared<Genre>("Fiction", false);
+    auto publisher = std::make_shared<Publisher>("Publisher", "Address");
+    auto language = std::make_shared<Language>("en", "English");
+
+    Book restrictedBook("1", "Horror Book", author, 2020, restrictedGenre, publisher, language);
+    Book normalBook("2", "Normal Book", author, 2020, normalGenre, publisher, language);
+
+    EXPECT_TRUE(restrictedGenre->isRestricted());
+    EXPECT_FALSE(normalGenre->isRestricted());
+    EXPECT_FALSE(restrictedGenre->canBeBorrowedByStudent());
+    EXPECT_TRUE(normalGenre->canBeBorrowedByStudent());
+}

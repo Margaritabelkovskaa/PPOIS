@@ -65,6 +65,4 @@ TEST(ReaderTest, BankAccountMethods) {
     // Проверяем методы банковского счета
     EXPECT_FALSE(reader.hasBankAccount());
     EXPECT_FALSE(reader.canPayFine(10.0));
-
-    // Можно добавить тесты с реальным BankAccount когда он будет доступен
 }

@@ -1,7 +1,8 @@
 #ifndef BOOKSTORAGESYSTEM_H
 #define BOOKSTORAGESYSTEM_H
 
-#include "BookCopy.h"
+#include "StorageRoom.h"
+#include "BookLocation.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -9,88 +10,16 @@
 
 using namespace std;
 
-class BookLocation {
-private:
-    string section;
-    string rack;
-    string shelf;
-    string position;
-
-public:
-    BookLocation(const string& section, const string& rack, const string& shelf, const string& position);
-
-    string getFullLocation() const;
-    bool isValid() const;
-
-    string getSection() const;
-    string getRack() const;
-    string getShelf() const;
-    string getPosition() const;
-};
-
-class Shelf {
-private:
-    string shelfId;
-    int capacity;
-    vector<shared_ptr<BookCopy>> books;
-
-public:
-    Shelf(const string& shelfId, int capacity);
-
-    bool addBook(const shared_ptr<BookCopy>& book);
-    bool removeBook(const string& inventoryNumber);
-    bool containsBook(const string& inventoryNumber) const;
-    bool hasSpace() const;
-
-    vector<shared_ptr<BookCopy>> getBooks() const;
-    string getShelfId() const;
-    int getBookCount() const;
-    int getCapacity() const;
-};
-
-class BookRack {
-private:
-    string rackId;
-    vector<shared_ptr<Shelf>> shelves;
-
-public:
-    BookRack(const string& rackId);
-
-    bool addShelf(const shared_ptr<Shelf>& shelf);
-    shared_ptr<Shelf> getShelf(const string& shelfId) const;
-
-    bool addBook(const shared_ptr<BookCopy>& book, const string& shelfId);
-    bool removeBook(const string& inventoryNumber);
-
-    vector<shared_ptr<BookCopy>> getAllBooks() const;
-    string getRackId() const;
-    vector<shared_ptr<Shelf>> getShelves() const;
-};
-
-class StorageRoom {
-private:
-    string roomId;
-    vector<shared_ptr<BookRack>> racks;
-
-public:
-    StorageRoom(const string& roomId);
-
-    bool addRack(const shared_ptr<BookRack>& rack);
-    shared_ptr<BookRack> getRack(const string& rackId) const;
-
-    bool addBook(const shared_ptr<BookCopy>& book, const string& rackId, const string& shelfId);
-    bool removeBook(const string& inventoryNumber);
-    shared_ptr<BookCopy> findBook(const string& inventoryNumber) const;
-
-    vector<shared_ptr<BookCopy>> getAllBooks() const;
-    string getRoomId() const;
-    vector<shared_ptr<BookRack>> getRacks() const;
-};
-
 class BookStorageSystem {
 private:
     map<string, shared_ptr<StorageRoom>> rooms;
     map<string, shared_ptr<BookLocation>> bookLocations;
+    string systemName;                    // Название системы
+    string version;                       // Версия системы
+    int totalBooksInSystem;               // Общее количество книг в системе
+    map<string, int> categoryStatistics;  // Статистика по категориям
+    string adminContact;                  // Контакт администратора
+    bool isSystemActive;                  // Активна ли система
 
 public:
     BookStorageSystem();
@@ -108,6 +37,21 @@ public:
     vector<shared_ptr<BookCopy>> getAllBooks() const;
     int getTotalBookCount() const;
     vector<shared_ptr<StorageRoom>> getAllRooms() const;
+    
+    // Новые методы
+    string getSystemName() const;
+    void setSystemName(const string& name);
+    string getVersion() const;
+    void setVersion(const string& version);
+    string getAdminContact() const;
+    void setAdminContact(const string& contact);
+    bool getIsSystemActive() const;
+    void setIsSystemActive(bool active);
+    map<string, int> getCategoryStatistics() const;
+    void updateCategoryStatistics();
+    int getRoomCount() const;
+    bool hasRoom(const string& roomId) const;
+    void deactivateSystem();
 };
 
 #endif

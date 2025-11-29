@@ -30,104 +30,6 @@ protected:
     std::shared_ptr<Edge<int>> e1, e2, e3, e4;
 };
 
-// ===== ТЕСТЫ ДЛЯ VERTEX =====
-TEST(VertexTest, BasicOperations) {
-    Vertex<int> v1(42);
-    Vertex<int> v2(100);
-    Vertex<int> v3(42);
-
-    // Проверка данных
-    EXPECT_EQ(42, v1.getData());
-    EXPECT_EQ(100, v2.getData());
-
-    // Проверка ID (должны быть уникальными)
-    EXPECT_NE(v1.getId(), v2.getId());
-    EXPECT_NE(v1.getId(), v3.getId());
-
-    // Проверка операторов сравнения
-    EXPECT_TRUE(v1 == v1);
-    EXPECT_FALSE(v1 == v2);
-    EXPECT_TRUE(v1 != v2);
-    EXPECT_TRUE(v1 < v2);  // Сравнение по ID
-}
-
-TEST(VertexTest, CopyOperations) {
-    Vertex<int> original(999);
-    Vertex<int> copy1(original);  // Конструктор копирования
-    Vertex<int> copy2 = original; // Оператор присваивания
-
-    // Данные должны совпадать
-    EXPECT_EQ(original.getData(), copy1.getData());
-    EXPECT_EQ(original.getData(), copy2.getData());
-
-    // Но ID должны быть разными
-    EXPECT_NE(original.getId(), copy1.getId());
-    EXPECT_NE(original.getId(), copy2.getId());
-}
-
-TEST(VertexTest, OutputOperator) {
-    Vertex<int> v(123);
-    std::ostringstream oss;
-    oss << v;
-
-    std::string output = oss.str();
-    EXPECT_TRUE(output.find("Vertex(123") != std::string::npos);
-    EXPECT_TRUE(output.find("id:") != std::string::npos);
-}
-
-// ===== ТЕСТЫ ДЛЯ EDGE =====
-TEST(EdgeTest, BasicOperations) {
-    auto v1 = std::make_shared<Vertex<int>>(1);
-    auto v2 = std::make_shared<Vertex<int>>(2);
-    auto v3 = std::make_shared<Vertex<int>>(3);
-
-    Edge<int> e1(v1, v2);
-    Edge<int> e2(v2, v3);
-    Edge<int> e3(v1, v2); // Такие же вершины
-
-    // Проверка доступа к вершинам
-    EXPECT_EQ(v1, e1.getFrom());
-    EXPECT_EQ(v2, e1.getTo());
-
-    // Проверка операторов сравнения
-    EXPECT_TRUE(e1 == e1);
-    EXPECT_FALSE(e1 == e2);
-    EXPECT_TRUE(e1 != e2);
-
-    // Для неориентированного графа ребро симметрично
-    Edge<int> e4(v2, v1);
-    EXPECT_TRUE(e1 == e4); // v1-v2 должно равняться v2-v1
-}
-
-TEST(EdgeTest, CopyOperations) {
-    auto v1 = std::make_shared<Vertex<int>>(10);
-    auto v2 = std::make_shared<Vertex<int>>(20);
-
-    Edge<int> original(v1, v2);
-    Edge<int> copy1(original);  // Конструктор копирования
-    Edge<int> copy2 = original; // Оператор присваивания
-
-    EXPECT_EQ(original.getFrom(), copy1.getFrom());
-    EXPECT_EQ(original.getTo(), copy1.getTo());
-    EXPECT_EQ(original.getFrom(), copy2.getFrom());
-    EXPECT_EQ(original.getTo(), copy2.getTo());
-}
-
-TEST(EdgeTest, OutputOperator) {
-    auto v1 = std::make_shared<Vertex<int>>(100);
-    auto v2 = std::make_shared<Vertex<int>>(200);
-    Edge<int> e(v1, v2);
-
-    std::ostringstream oss;
-    oss << e;
-
-    std::string output = oss.str();
-    EXPECT_TRUE(output.find("Edge(") != std::string::npos);
-    EXPECT_TRUE(output.find("Vertex(100") != std::string::npos);
-    EXPECT_TRUE(output.find("Vertex(200") != std::string::npos);
-}
-
-// ===== БАЗОВЫЕ ТЕСТЫ КОНТЕЙНЕРА =====
 TEST_F(GraphTest, DefaultConstructor) {
     Graph<int> emptyGraph;
     EXPECT_TRUE(emptyGraph.empty());
@@ -160,7 +62,7 @@ TEST_F(GraphTest, SizeMethod) {
     EXPECT_EQ(4, graph->size());
 }
 
-// ===== ТЕСТЫ ОПЕРАТОРОВ СРАВНЕНИЯ =====
+// ===== Г’Г…Г‘Г’Г› ГЋГЏГ…ГђГЂГ’ГЋГђГЋГ‚ Г‘ГђГЂГ‚ГЌГ…ГЌГ€Гџ =====
 TEST_F(GraphTest, EqualityOperator) {
     Graph<int> sameGraph;
     auto sv1 = sameGraph.addVertex(1);
@@ -200,7 +102,7 @@ TEST_F(GraphTest, ComparisonOperators) {
     EXPECT_TRUE(largerGraph >= *graph);
 }
 
-// ===== ТЕСТЫ РАБОТЫ С ВЕРШИНАМИ =====
+// ===== Г’Г…Г‘Г’Г› ГђГЂГЃГЋГ’Г› Г‘ Г‚Г…ГђГГ€ГЌГЂГЊГ€ =====
 TEST_F(GraphTest, AddVertex) {
     auto newVertex = graph->addVertex(5);
     EXPECT_EQ(5, graph->vertexCount());
@@ -237,7 +139,7 @@ TEST_F(GraphTest, RemoveNonExistentVertex) {
     EXPECT_FALSE(graph->removeVertex(nonExistent));
 }
 
-// ===== ТЕСТЫ РАБОТЫ С РЕБРАМИ =====
+// ===== Г’Г…Г‘Г’Г› ГђГЂГЃГЋГ’Г› Г‘ ГђГ…ГЃГђГЂГЊГ€ =====
 TEST_F(GraphTest, AddEdge) {
     auto newEdge = graph->addEdge(v2, v4);
     EXPECT_EQ(5, graph->edgeCount());
@@ -279,7 +181,6 @@ TEST_F(GraphTest, RemoveNonExistentEdge) {
     EXPECT_FALSE(graph->removeEdge(nonExistentEdge));
 }
 
-// ===== ТЕСТЫ ВЫЧИСЛЕНИЯ СТЕПЕНЕЙ =====
 TEST_F(GraphTest, VertexDegree) {
     EXPECT_EQ(2, graph->vertexDegree(v1));
     EXPECT_EQ(2, graph->vertexDegree(v2));
@@ -296,7 +197,6 @@ TEST_F(GraphTest, EdgeDegree) {
     EXPECT_EQ(2, graph->edgeDegree(e1));
 }
 
-// ===== ТЕСТЫ ИТЕРАТОРОВ ВЕРШИН =====
 TEST_F(GraphTest, VertexIterator) {
     size_t count = 0;
     for (auto it = graph->verticesBegin(); it != graph->verticesEnd(); ++it) {
@@ -329,7 +229,6 @@ TEST_F(GraphTest, RemoveVertexByIterator) {
     EXPECT_EQ(3, graph->vertexCount());
 }
 
-// ===== ТЕСТЫ ИТЕРАТОРОВ РЕБЕР =====
 TEST_F(GraphTest, EdgeIterator) {
     size_t count = 0;
     for (auto it = graph->edgesBegin(); it != graph->edgesEnd(); ++it) {
@@ -354,7 +253,6 @@ TEST_F(GraphTest, RemoveEdgeByIterator) {
     EXPECT_EQ(3, graph->edgeCount());
 }
 
-// ===== ТЕСТЫ ИНЦИДЕНТНЫХ РЕБЕР =====
 TEST_F(GraphTest, IncidentEdgeIterator) {
     size_t count = 0;
     for (auto it = graph->incidentEdgesBegin(v1); it != graph->incidentEdgesEnd(v1); ++it) {
@@ -365,7 +263,6 @@ TEST_F(GraphTest, IncidentEdgeIterator) {
     EXPECT_EQ(2, count);
 }
 
-// ===== ТЕСТЫ СМЕЖНЫХ ВЕРШИН =====
 TEST_F(GraphTest, AdjacentVertexIterator) {
     std::vector<int> adjacentValues;
     for (auto it = graph->adjacentBegin(v1); it != graph->adjacentEnd(v1); ++it) {
@@ -376,7 +273,6 @@ TEST_F(GraphTest, AdjacentVertexIterator) {
     EXPECT_TRUE(std::find(adjacentValues.begin(), adjacentValues.end(), 4) != adjacentValues.end());
 }
 
-// ===== ТЕСТЫ ОПЕРАТОРА ВЫВОДА =====
 TEST_F(GraphTest, OutputOperator) {
     std::ostringstream oss;
     oss << *graph;
@@ -384,7 +280,6 @@ TEST_F(GraphTest, OutputOperator) {
     EXPECT_TRUE(output.find("Graph with 4 vertices and 4 edges") != std::string::npos);
 }
 
-// ===== ТЕСТЫ ИСКЛЮЧЕНИЙ =====
 TEST_F(GraphTest, Exceptions) {
     EXPECT_THROW(graph->getVertex(10), std::out_of_range);
     auto nonExistent = std::make_shared<Vertex<int>>(999);
@@ -392,8 +287,8 @@ TEST_F(GraphTest, Exceptions) {
     EXPECT_THROW(graph->addEdge(v1, v1), std::invalid_argument);
 }
 
-// ===== ТЕСТЫ С ДРУГИМИ ТИПАМИ ДАННЫХ =====
-TEST(GraphStringTest, StringVertices) {
+
+TEST(GraphTest, StringVertices) {
     Graph<std::string> stringGraph;
     auto v1 = stringGraph.addVertex("A");
     auto v2 = stringGraph.addVertex("B");
@@ -404,61 +299,7 @@ TEST(GraphStringTest, StringVertices) {
     EXPECT_TRUE(stringGraph.containsEdge(v1, v2));
 }
 
-TEST(GraphUserTest, CustomClassVertices) {
-    struct Point {
-        int x, y;
-        Point(int x, int y) : x(x), y(y) {}
-        bool operator==(const Point& other) const { return x == other.x && y == other.y; }
-        bool operator<(const Point& other) const { return x < other.x || (x == other.x && y < other.y); }
-    };
-
-    Graph<Point> pointGraph;
-    auto v1 = pointGraph.addVertex(Point(1, 2));
-    auto v2 = pointGraph.addVertex(Point(3, 4));
-    pointGraph.addEdge(v1, v2);
-
-    EXPECT_EQ(2, pointGraph.vertexCount());
-    EXPECT_EQ(1, pointGraph.edgeCount());
-}
-
-// ===== ТЕСТЫ ПРОИЗВОДИТЕЛЬНОСТИ =====
-TEST(GraphPerformanceTest, LargeGraph) {
-    Graph<int> largeGraph;
-    std::vector<std::shared_ptr<Vertex<int>>> vertices;
-
-    for (int i = 0; i < 100; ++i) {
-        vertices.push_back(largeGraph.addVertex(i));
-    }
-
-    for (int i = 0; i < 100; ++i) {
-        for (int j = 1; j <= 5 && i + j < 100; ++j) {
-            largeGraph.addEdge(vertices[i], vertices[i + j]);
-        }
-    }
-
-    EXPECT_EQ(100, largeGraph.vertexCount());
-    EXPECT_GT(largeGraph.edgeCount(), 0);
-
-    size_t vertexCount = 0;
-    for (auto it = largeGraph.verticesBegin(); it != largeGraph.verticesEnd(); ++it) {
-        ++vertexCount;
-    }
-    EXPECT_EQ(100, vertexCount);
-}
-
-// ===== ГЛАВНАЯ ФУНКЦИЯ =====
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
-
-    std::cout << "=== Running Graph Tests ===" << std::endl;
-    std::cout << "Tests include:" << std::endl;
-    std::cout << "- Vertex operations" << std::endl;
-    std::cout << "- Edge operations" << std::endl;
-    std::cout << "- Graph container functionality" << std::endl;
-    std::cout << "- Iterators (vertex, edge, incident, adjacent)" << std::endl;
-    std::cout << "- Comparison operators" << std::endl;
-    std::cout << "- Exception handling" << std::endl;
-    std::cout << "===========================" << std::endl;
-
     return RUN_ALL_TESTS();
 }

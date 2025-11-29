@@ -8,8 +8,6 @@ class Edge;
 
 template<typename T>
 class Graph;
-
-// 🔹 Константный итератор рёбер (только для чтения)
 template<typename T>
 class ConstEdgeIterator {
 private:

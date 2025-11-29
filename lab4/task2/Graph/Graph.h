@@ -10,14 +10,16 @@
 #include "Vertex.h"
 #include "Edge.h"
 #include "VertexIterator.h"
+#include "ConstVertexIterator.h"
 #include "EdgeIterator.h"
+#include "ConstEdgeIterator.h"
 #include "IncidentEdgeIterator.h"
 #include "AdjacentVertexIterator.h"
 
 template<typename T>
 class Graph {
 public:
-    // STL-òğåáîâàíèÿ: typedef'û
+    // STL-Ã²Ã°Ã¥Ã¡Ã®Ã¢Ã Ã­Ã¨Ã¿: typedef'Ã»
     using value_type = std::shared_ptr<Vertex<T>>;
     using reference = value_type&;
     using const_reference = const value_type&;
@@ -31,7 +33,7 @@ public:
     using vertex_ptr = value_type;
     using edge_ptr = std::shared_ptr<edge_type>;
 
-    // Èòåğàòîğû
+    // ÃˆÃ²Ã¥Ã°Ã Ã²Ã®Ã°Ã»
     using vertex_iterator = VertexIterator<T>;
     using const_vertex_iterator = ConstVertexIterator<T>;
     using reverse_vertex_iterator = std::reverse_iterator<vertex_iterator>;
@@ -49,7 +51,7 @@ private:
     std::vector<vertex_ptr> vertices;
     std::vector<std::vector<bool>> adjacency_matrix;
 
-    // Âñïîìîãàòåëüíûå ìåòîäû
+    // Ã‚Ã±Ã¯Ã®Ã¬Ã®Ã£Ã Ã²Ã¥Ã«Ã¼Ã­Ã»Ã¥ Ã¬Ã¥Ã²Ã®Ã¤Ã»
     size_type find_vertex_index(vertex_ptr vertex) const {
         for (size_type i = 0; i < vertices.size(); ++i) {
             if (vertices[i] == vertex) return i;
@@ -58,10 +60,10 @@ private:
     }
 
     void update_matrix_after_vertex_removal(size_type index) {
-        // Óäàëÿåì ñòğîêó
+        // Ã“Ã¤Ã Ã«Ã¿Ã¥Ã¬ Ã±Ã²Ã°Ã®ÃªÃ³
         adjacency_matrix.erase(adjacency_matrix.begin() + index);
 
-        // Óäàëÿåì ñòîëáåö èç âñåõ ñòğîê
+        // Ã“Ã¤Ã Ã«Ã¿Ã¥Ã¬ Ã±Ã²Ã®Ã«Ã¡Ã¥Ã¶ Ã¨Ã§ Ã¢Ã±Ã¥Ãµ Ã±Ã²Ã°Ã®Ãª
         for (auto& row : adjacency_matrix) {
             if (row.size() > index) {
                 row.erase(row.begin() + index);
@@ -70,11 +72,11 @@ private:
     }
 
 public:
-    // ===== ÊÎÍÑÒĞÓÊÒÎĞÛ È ÄÅÑÒĞÓÊÒÎĞ =====
+    // ===== ÃŠÃÃÃ‘Ã’ÃÃ“ÃŠÃ’ÃÃÃ› Ãˆ Ã„Ã…Ã‘Ã’ÃÃ“ÃŠÃ’ÃÃ =====
     Graph() noexcept = default;
 
     Graph(const Graph& other) {
-        // Êîïèğóåì âåğøèíû
+        // ÃŠÃ®Ã¯Ã¨Ã°Ã³Ã¥Ã¬ Ã¢Ã¥Ã°Ã¸Ã¨Ã­Ã»
         std::map<vertex_ptr, vertex_ptr> vertex_map;
         for (const auto& v : other.vertices) {
             auto new_vertex = std::make_shared<vertex_type>(*v);
@@ -82,7 +84,7 @@ public:
             vertex_map[v] = new_vertex;
         }
 
-        // Ïåğåñòğàèâàåì ìàòğèöó ñìåæíîñòè
+        // ÃÃ¥Ã°Ã¥Ã±Ã²Ã°Ã Ã¨Ã¢Ã Ã¥Ã¬ Ã¬Ã Ã²Ã°Ã¨Ã¶Ã³ Ã±Ã¬Ã¥Ã¦Ã­Ã®Ã±Ã²Ã¨
         adjacency_matrix.resize(vertices.size(), std::vector<bool>(vertices.size(), false));
 
         for (size_type i = 0; i < other.vertices.size(); ++i) {
@@ -100,7 +102,7 @@ public:
 
     ~Graph() = default;
 
-    // ===== ÎÑÍÎÂÍÛÅ ÌÅÒÎÄÛ ÊÎÍÒÅÉÍÅĞÀ =====
+    // ===== ÃÃ‘ÃÃÃ‚ÃÃ›Ã… ÃŒÃ…Ã’ÃÃ„Ã› ÃŠÃÃÃ’Ã…Ã‰ÃÃ…ÃÃ€ =====
     bool empty() const noexcept { return vertices.empty(); }
 
     void clear() noexcept {
@@ -110,7 +112,7 @@ public:
 
     size_type size() const noexcept { return vertices.size(); }
 
-    // ===== ÎÏÅĞÀÒÎĞ ÏĞÈÑÂÀÈÂÀÍÈß =====
+    // ===== ÃÃÃ…ÃÃ€Ã’ÃÃ ÃÃÃˆÃ‘Ã‚Ã€ÃˆÃ‚Ã€ÃÃˆÃŸ =====
     Graph& operator=(const Graph& other) {
         if (this != &other) {
             clear();
@@ -121,11 +123,11 @@ public:
         return *this;
     }
 
-    // ===== ÎÏÅĞÀÒÎĞÛ ÑĞÀÂÍÅÍÈß =====
+    // ===== ÃÃÃ…ÃÃ€Ã’ÃÃÃ› Ã‘ÃÃ€Ã‚ÃÃ…ÃÃˆÃŸ =====
     bool operator==(const Graph& other) const {
         if (vertices.size() != other.vertices.size()) return false;
 
-        // Ñğàâíèâàåì òîëüêî ñòğóêòóğó ãğàôà (ğåáğà)
+        // Ã‘Ã°Ã Ã¢Ã­Ã¨Ã¢Ã Ã¥Ã¬ Ã²Ã®Ã«Ã¼ÃªÃ® Ã±Ã²Ã°Ã³ÃªÃ²Ã³Ã°Ã³ Ã£Ã°Ã Ã´Ã  (Ã°Ã¥Ã¡Ã°Ã )
         for (size_type i = 0; i < vertices.size(); ++i) {
             for (size_type j = 0; j < vertices.size(); ++j) {
                 if (adjacency_matrix[i][j] != other.adjacency_matrix[i][j]) {
@@ -142,7 +144,7 @@ public:
     bool operator<=(const Graph& other) const { return vertexCount() <= other.vertexCount(); }
     bool operator>=(const Graph& other) const { return vertexCount() >= other.vertexCount(); }
 
-    // ===== ÌÅÒÎÄÛ ÄËß ĞÀÁÎÒÛ Ñ ÂÅĞØÈÍÀÌÈ =====
+    // ===== ÃŒÃ…Ã’ÃÃ„Ã› Ã„Ã‹ÃŸ ÃÃ€ÃÃÃ’Ã› Ã‘ Ã‚Ã…ÃÃ˜ÃˆÃÃ€ÃŒÃˆ =====
     bool containsVertex(vertex_ptr vertex) const {
         return find_vertex_index(vertex) != vertices.size();
     }
@@ -153,12 +155,12 @@ public:
         auto new_vertex = std::make_shared<vertex_type>(value);
         vertices.push_back(new_vertex);
 
-        // Ğàñøèğÿåì ñóùåñòâóşùèå ñòğîêè
+        // ÃÃ Ã±Ã¸Ã¨Ã°Ã¿Ã¥Ã¬ Ã±Ã³Ã¹Ã¥Ã±Ã²Ã¢Ã³Ã¾Ã¹Ã¨Ã¥ Ã±Ã²Ã°Ã®ÃªÃ¨
         for (auto& row : adjacency_matrix) {
             row.push_back(false);
         }
 
-        // Äîáàâëÿåì íîâóş ñòğîêó
+        // Ã„Ã®Ã¡Ã Ã¢Ã«Ã¿Ã¥Ã¬ Ã­Ã®Ã¢Ã³Ã¾ Ã±Ã²Ã°Ã®ÃªÃ³
         adjacency_matrix.push_back(std::vector<bool>(vertices.size(), false));
 
         return new_vertex;
@@ -175,13 +177,13 @@ public:
         size_type index = find_vertex_index(vertex);
         if (index == vertices.size()) return false;
 
-        // Óäàëÿåì âåğøèíó
+        // Ã“Ã¤Ã Ã«Ã¿Ã¥Ã¬ Ã¢Ã¥Ã°Ã¸Ã¨Ã­Ã³
         vertices.erase(vertices.begin() + index);
         update_matrix_after_vertex_removal(index);
         return true;
     }
 
-    // ===== ÌÅÒÎÄÛ ÄËß ĞÀÁÎÒÛ Ñ ĞÅÁĞÀÌÈ =====
+    // ===== ÃŒÃ…Ã’ÃÃ„Ã› Ã„Ã‹ÃŸ ÃÃ€ÃÃÃ’Ã› Ã‘ ÃÃ…ÃÃÃ€ÃŒÃˆ =====
     bool containsEdge(vertex_ptr from, vertex_ptr to) const {
         size_type i = find_vertex_index(from);
         size_type j = find_vertex_index(to);
@@ -215,7 +217,7 @@ public:
         }
 
         adjacency_matrix[i][j] = true;
-        adjacency_matrix[j][i] = true;  // Íåîğèåíòèğîâàííûé ãğàô
+        adjacency_matrix[j][i] = true;  // ÃÃ¥Ã®Ã°Ã¨Ã¥Ã­Ã²Ã¨Ã°Ã®Ã¢Ã Ã­Ã­Ã»Ã© Ã£Ã°Ã Ã´
 
         return std::make_shared<edge_type>(from, to);
     }
@@ -242,7 +244,7 @@ public:
         return removeEdge(edge->getFrom(), edge->getTo());
     }
 
-    // ===== ÂÛ×ÈÑËÅÍÈÅ ÑÒÅÏÅÍÅÉ =====
+    // ===== Ã‚Ã›Ã—ÃˆÃ‘Ã‹Ã…ÃÃˆÃ… Ã‘Ã’Ã…ÃÃ…ÃÃ…Ã‰ =====
     size_type vertexDegree(vertex_ptr vertex) const {
         size_type index = find_vertex_index(vertex);
         if (index == vertices.size()) return 0;
@@ -255,10 +257,10 @@ public:
     }
 
     size_type edgeDegree(edge_ptr edge) const noexcept {
-        return 2;  // Äëÿ íåîğèåíòèğîâàííîãî ãğàôà
+        return 2;  // Ã„Ã«Ã¿ Ã­Ã¥Ã®Ã°Ã¨Ã¥Ã­Ã²Ã¨Ã°Ã®Ã¢Ã Ã­Ã­Ã®Ã£Ã® Ã£Ã°Ã Ã´Ã 
     }
 
-    // ===== ÓÄÀËÅÍÈÅ ÏÎ ÈÒÅĞÀÒÎĞÀÌ =====
+    // ===== Ã“Ã„Ã€Ã‹Ã…ÃÃˆÃ… ÃÃ ÃˆÃ’Ã…ÃÃ€Ã’ÃÃÃ€ÃŒ =====
     bool removeVertex(vertex_iterator it) {
         return removeVertex(*it);
     }
@@ -267,7 +269,7 @@ public:
         return removeEdge(*it);
     }
 
-    // ===== ÈÒÅĞÀÒÎĞÛ ÂÅĞØÈÍ =====
+    // ===== ÃˆÃ’Ã…ÃÃ€Ã’ÃÃÃ› Ã‚Ã…ÃÃ˜ÃˆÃ =====
     vertex_iterator verticesBegin() {
         return vertex_iterator(this, vertices.begin());
     }
@@ -300,9 +302,9 @@ public:
         return const_reverse_vertex_iterator(verticesCBegin());
     }
 
-    // Â êëàññå Graph èñïğàâüòå ìåòîäû èòåğàòîğîâ:
+    // Ã‚ ÃªÃ«Ã Ã±Ã±Ã¥ Graph Ã¨Ã±Ã¯Ã°Ã Ã¢Ã¼Ã²Ã¥ Ã¬Ã¥Ã²Ã®Ã¤Ã» Ã¨Ã²Ã¥Ã°Ã Ã²Ã®Ã°Ã®Ã¢:
 
-// ===== ÈÒÅĞÀÒÎĞÛ ĞÅÁÅĞ =====
+// ===== ÃˆÃ’Ã…ÃÃ€Ã’ÃÃÃ› ÃÃ…ÃÃ…Ã =====
     edge_iterator edgesBegin() {
         return edge_iterator(this, 0, 0);
     }
@@ -319,7 +321,7 @@ public:
         return const_edge_iterator(this, vertices.size(), 0);
     }
 
-    // ===== ÈÍÖÈÄÅÍÒÍÛÅ ĞÅÁĞÀ =====
+    // ===== ÃˆÃÃ–ÃˆÃ„Ã…ÃÃ’ÃÃ›Ã… ÃÃ…ÃÃÃ€ =====
     incident_edge_iterator incidentEdgesBegin(vertex_ptr vertex) {
         return incident_edge_iterator(this, vertex, 0);
     }
@@ -328,7 +330,7 @@ public:
         return incident_edge_iterator(this, vertex, vertices.size());
     }
 
-    // ===== ÑÌÅÆÍÛÅ ÂÅĞØÈÍÛ =====
+    // ===== Ã‘ÃŒÃ…Ã†ÃÃ›Ã… Ã‚Ã…ÃÃ˜ÃˆÃÃ› =====
     adjacent_vertex_iterator adjacentBegin(vertex_ptr vertex) {
         return adjacent_vertex_iterator(this, vertex, 0);
     }
@@ -338,7 +340,7 @@ public:
     }
 
 
-    // Äëÿ äîñòóïà èç èòåğàòîğîâ
+    // Ã„Ã«Ã¿ Ã¤Ã®Ã±Ã²Ã³Ã¯Ã  Ã¨Ã§ Ã¨Ã²Ã¥Ã°Ã Ã²Ã®Ã°Ã®Ã¢
     template<typename U> friend class VertexIterator;
     template<typename U> friend class ConstVertexIterator;
     template<typename U> friend class EdgeIterator;
@@ -346,7 +348,7 @@ public:
     template<typename U> friend class IncidentEdgeIterator;
     template<typename U> friend class AdjacentVertexIterator;
 
-    // ===== ÎÏÅĞÀÒÎĞ ÂÛÂÎÄÀ =====
+    // ===== ÃÃÃ…ÃÃ€Ã’ÃÃ Ã‚Ã›Ã‚ÃÃ„Ã€ =====
     friend std::ostream& operator<<(std::ostream& os, const Graph& graph) {
         os << "Graph with " << graph.vertexCount() << " vertices and " << graph.edgeCount() << " edges\n";
 
@@ -362,4 +364,5 @@ public:
 
         return os;
     }
+
 };

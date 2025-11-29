@@ -26,7 +26,10 @@ private:
         size_t n = graph->vertices.size();
         size_t base_index = graph->find_vertex_index(base_vertex);
 
-        if (base_index >= n) return;
+        if (base_index >= n) {
+            current_index = n;
+            return;
+        }
 
         while (current_index < n) {
             if (graph->adjacency_matrix[base_index][current_index] &&
@@ -49,24 +52,15 @@ public:
         find_next_incident();
     }
 
-    // Конструктор по умолчанию
     IncidentEdgeIterator() noexcept : graph(nullptr), base_vertex(nullptr), current_index(0) {}
 
     EdgePtr operator*() const {
-        if (!graph || current_index >= graph->vertices.size()) {
+        if (!graph || !base_vertex || current_index >= graph->vertices.size()) {
             return nullptr;
         }
 
-        // Ищем существующее ребро в кэше
+        // Создаем ребро на лету
         VertexPtr neighbor = graph->vertices[current_index];
-        for (const auto& edge : graph->edges) {
-            if ((edge->getFrom() == base_vertex && edge->getTo() == neighbor) ||
-                (edge->getTo() == base_vertex && edge->getFrom() == neighbor)) {
-                return edge;
-            }
-        }
-
-        // Если не нашли, создаем временное представление
         return std::make_shared<Edge<T>>(base_vertex, neighbor);
     }
 

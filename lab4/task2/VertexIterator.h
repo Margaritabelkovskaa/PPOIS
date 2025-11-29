@@ -27,25 +27,45 @@ public:
         : graph(g), current(it) {
     }
 
-    reference operator*() { return *current; }
-    pointer operator->() { return &(*current); }
+    reference operator*() {
+        return *current;
+    }
 
-    VertexIterator& operator++() { ++current; return *this; }
-    VertexIterator operator++(int) { VertexIterator temp = *this; ++current; return temp; }
+    pointer operator->() {
+        return &(*current);
+    }
 
-    VertexIterator& operator--() { --current; return *this; }
-    VertexIterator operator--(int) { VertexIterator temp = *this; --current; return temp; }
+    VertexIterator& operator++() {
+        ++current;
+        return *this;
+    }
 
-    bool operator==(const VertexIterator& other) const { return current == other.current; }
-    bool operator!=(const VertexIterator& other) const { return current != other.current; }
+    VertexIterator operator++(int) {
+        VertexIterator temp = *this;
+        ++current;
+        return temp;
+    }
 
-    size_t getIndex() const {
-        return std::distance(graph->vertices.begin(),
-            typename std::vector<VertexPtr>::iterator(current));
+    VertexIterator& operator--() {
+        --current;
+        return *this;
+    }
+
+    VertexIterator operator--(int) {
+        VertexIterator temp = *this;
+        --current;
+        return temp;
+    }
+
+    bool operator==(const VertexIterator& other) const {
+        return current == other.current;
+    }
+
+    bool operator!=(const VertexIterator& other) const {
+        return current != other.current;
     }
 };
 
-// Константные версии
 template<typename T>
 class ConstVertexIterator {
 private:
@@ -64,22 +84,41 @@ public:
         : graph(g), current(it) {
     }
 
-    reference operator*() const { return *current; }
-    pointer operator->() const { return &(*current); }
+    reference operator*() const {
+        return *current;
+    }
 
-    ConstVertexIterator& operator++() { ++current; return *this; }
-    ConstVertexIterator operator++(int) { ConstVertexIterator temp = *this; ++current; return temp; }
+    pointer operator->() const {
+        return &(*current);
+    }
 
-    ConstVertexIterator& operator--() { --current; return *this; }
-    ConstVertexIterator operator--(int) { ConstVertexIterator temp = *this; --current; return temp; }
+    ConstVertexIterator& operator++() {
+        ++current;
+        return *this;
+    }
 
-    bool operator==(const ConstVertexIterator& other) const { return current == other.current; }
-    bool operator!=(const ConstVertexIterator& other) const { return current != other.current; }
+    ConstVertexIterator operator++(int) {
+        ConstVertexIterator temp = *this;
+        ++current;
+        return temp;
+    }
+
+    ConstVertexIterator& operator--() {
+        --current;
+        return *this;
+    }
+
+    ConstVertexIterator operator--(int) {
+        ConstVertexIterator temp = *this;
+        --current;
+        return temp;
+    }
+
+    bool operator==(const ConstVertexIterator& other) const {
+        return current == other.current;
+    }
+
+    bool operator!=(const ConstVertexIterator& other) const {
+        return current != other.current;
+    }
 };
-
-// Reverse итераторы
-template<typename T>
-using ReverseVertexIterator = std::reverse_iterator<VertexIterator<T>>;
-
-template<typename T>
-using ConstReverseVertexIterator = std::reverse_iterator<ConstVertexIterator<T>>;

@@ -19,7 +19,6 @@ public:
     Vertex& operator=(const Vertex& other) {
         if (this != &other) {
             data = other.data;
-            // id не копируем - создаем новый уникальный ID
         }
         return *this;
     }

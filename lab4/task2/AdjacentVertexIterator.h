@@ -23,7 +23,10 @@ private:
         size_t n = graph->vertices.size();
         size_t base_index = graph->find_vertex_index(base_vertex);
 
-        if (base_index >= n) return;
+        if (base_index >= n) {
+            current_index = n;
+            return;
+        }
 
         while (current_index < n) {
             if (graph->adjacency_matrix[base_index][current_index] &&
@@ -49,7 +52,7 @@ public:
     AdjacentVertexIterator() noexcept : graph(nullptr), base_vertex(nullptr), current_index(0) {}
 
     VertexPtr operator*() const {
-        if (!graph || current_index >= graph->vertices.size()) {
+        if (!graph || !base_vertex || current_index >= graph->vertices.size()) {
             return nullptr;
         }
         return graph->vertices[current_index];

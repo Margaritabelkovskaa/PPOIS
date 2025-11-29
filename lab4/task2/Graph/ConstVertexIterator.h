@@ -9,7 +9,6 @@ class Vertex;
 template<typename T>
 class Graph;
 
-// 🔹 Константный итератор вершин (только для чтения)
 template<typename T>
 class ConstVertexIterator {
 private:

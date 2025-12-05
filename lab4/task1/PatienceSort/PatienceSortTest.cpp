@@ -11,7 +11,7 @@ TEST(PatienceSortTest, EmployeeClass) {
         Employee("Alice", 25, 2500.0),
         Employee("Charlie", 22, 4200.0)
     };
-    patienceSort(data);
+    PatienceSort<Employee>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
     EXPECT_EQ(2500.0, data[0].getSalary());
     EXPECT_EQ(3500.0, data[1].getSalary());
@@ -24,7 +24,7 @@ TEST(PatienceSortTest, EmployeeClassAlreadySorted) {
         Employee("Bob", 30, 3200.0),
         Employee("Charlie", 22, 4800.0)
     };
-    patienceSort(data);
+    PatienceSort<Employee>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
@@ -34,7 +34,7 @@ TEST(PatienceSortTest, EmployeeClassReverse) {
         Employee("Bob", 30, 2800.0),
         Employee("Alice", 25, 1500.0)
     };
-    patienceSort(data);
+    PatienceSort<Employee>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
@@ -46,91 +46,90 @@ TEST(PatienceSortTest, EmployeeArray) {
     };
     const size_t size = sizeof(arr) / sizeof(arr[0]);
 
-    patienceSort(arr, size);
+    PatienceSort<Employee>::sort(arr, size);
     EXPECT_TRUE(std::is_sorted(arr, arr + size));
     EXPECT_EQ(1200.0, arr[0].getSalary());
     EXPECT_EQ(5000.0, arr[size - 1].getSalary());
 }
+
 // Тесты для vector<int>
 TEST(PatienceSortTest, EmptyVector) {
     std::vector<int> empty;
-    patienceSort(empty);
+    PatienceSort<int>::sort(empty);
     EXPECT_TRUE(empty.empty());
 }
 
 TEST(PatienceSortTest, SingleElement) {
-    std::vector<int> single = { 42 };
-    patienceSort(single);
+    std::vector<int> single = {42};
+    PatienceSort<int>::sort(single);
     EXPECT_EQ(1, single.size());
     EXPECT_EQ(42, single[0]);
 }
 
 TEST(PatienceSortTest, AlreadySortedInt) {
-    std::vector<int> data = { 1, 2, 3, 4, 5 };
-    patienceSort(data);
+    std::vector<int> data = {1, 2, 3, 4, 5};
+    PatienceSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(PatienceSortTest, ReverseSortedInt) {
-    std::vector<int> data = { 5, 4, 3, 2, 1 };
-    patienceSort(data);
+    std::vector<int> data = {5, 4, 3, 2, 1};
+    PatienceSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(PatienceSortTest, RandomOrderInt) {
-    std::vector<int> data = { 3, 1, 4, 1, 5, 9, 2, 6, 5 };
-    patienceSort(data);
+    std::vector<int> data = {3, 1, 4, 1, 5, 9, 2, 6, 5};
+    PatienceSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(PatienceSortTest, WithDuplicatesInt) {
-    std::vector<int> data = { 5, 2, 8, 2, 5, 1, 8, 9, 3, 2 };
-    patienceSort(data);
+    std::vector<int> data = {5, 2, 8, 2, 5, 1, 8, 9, 3, 2};
+    PatienceSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 // Тесты для vector<string>
 TEST(PatienceSortTest, AlreadySortedString) {
-    std::vector<std::string> data = { "apple", "banana", "cherry", "date" };
-    patienceSort(data);
+    std::vector<std::string> data = {"apple", "banana", "cherry", "date"};
+    PatienceSort<std::string>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(PatienceSortTest, ReverseSortedString) {
-    std::vector<std::string> data = { "date", "cherry", "banana", "apple" };
-    patienceSort(data);
+    std::vector<std::string> data = {"date", "cherry", "banana", "apple"};
+    PatienceSort<std::string>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(PatienceSortTest, SingleElementArray) {
     int* single = new int[1];
     single[0] = 42;
-    patienceSort(single, 1);
+    PatienceSort<int>::sort(single, 1);
     EXPECT_EQ(42, single[0]);
     delete[] single;
 }
 
 TEST(PatienceSortTest, IntArray) {
-    int arr[] = { 5, 2, 8, 1, 9, 3 };
+    int arr[] = {5, 2, 8, 1, 9, 3};
     const size_t size = sizeof(arr) / sizeof(arr[0]);
 
-    patienceSort(arr, size);
+    PatienceSort<int>::sort(arr, size);
     EXPECT_TRUE(std::is_sorted(arr, arr + size));
     EXPECT_EQ(1, arr[0]);
     EXPECT_EQ(9, arr[size - 1]);
 }
 
 TEST(PatienceSortTest, StringArray) {
-    std::string arr[] = { "zebra", "apple", "monkey", "banana" };
+    std::string arr[] = {"zebra", "apple", "monkey", "banana"};
     const size_t size = sizeof(arr) / sizeof(arr[0]);
 
-    patienceSort(arr, size);
+    PatienceSort<std::string>::sort(arr, size);
     EXPECT_TRUE(std::is_sorted(arr, arr + size));
     EXPECT_EQ("apple", arr[0]);
     EXPECT_EQ("zebra", arr[size - 1]);
 }
-
-
 
 // Главная функция
 int main(int argc, char** argv) {

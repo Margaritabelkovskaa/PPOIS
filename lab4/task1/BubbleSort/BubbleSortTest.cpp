@@ -8,45 +8,45 @@
 // Базовые тесты для vector<int>
 TEST(BubbleSortTest, EmptyVector) {
     std::vector<int> empty;
-    bubbleSort(empty);
+    BubbleSort<int>::sort(empty);
     EXPECT_TRUE(empty.empty());
 }
 
 TEST(BubbleSortTest, SingleElement) {
     std::vector<int> single = { 42 };
-    bubbleSort(single);
+    BubbleSort<int>::sort(single);
     EXPECT_EQ(1, single.size());
     EXPECT_EQ(42, single[0]);
 }
 
 TEST(BubbleSortTest, AlreadySortedInt) {
     std::vector<int> data = { 1, 2, 3, 4, 5 };
-    bubbleSort(data);
+    BubbleSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(BubbleSortTest, ReverseSortedInt) {
     std::vector<int> data = { 5, 4, 3, 2, 1 };
-    bubbleSort(data);
+    BubbleSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(BubbleSortTest, RandomOrderInt) {
     std::vector<int> data = { 3, 1, 4, 1, 5, 9, 2, 6, 5 };
-    bubbleSort(data);
+    BubbleSort<int>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 // Тесты для vector<string>
 TEST(BubbleSortTest, AlreadySortedString) {
     std::vector<std::string> data = { "apple", "banana", "cherry", "date" };
-    bubbleSort(data);
+    BubbleSort<std::string>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
 TEST(BubbleSortTest, ReverseSortedString) {
     std::vector<std::string> data = { "date", "cherry", "banana", "apple" };
-    bubbleSort(data);
+    BubbleSort<std::string>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
@@ -57,7 +57,7 @@ TEST(BubbleSortTest, EmployeeClass) {
         Employee("Alice", 25, 2500.0),
         Employee("Charlie", 22, 4200.0)
     };
-    bubbleSort(data);
+    BubbleSort<Employee>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
     EXPECT_EQ(2500.0, data[0].getSalary());
     EXPECT_EQ(3500.0, data[1].getSalary());
@@ -70,7 +70,7 @@ TEST(BubbleSortTest, EmployeeClassReverse) {
         Employee("Bob", 30, 2800.0),
         Employee("Alice", 25, 1500.0)
     };
-    bubbleSort(data);
+    BubbleSort<Employee>::sort(data);
     EXPECT_TRUE(std::is_sorted(data.begin(), data.end()));
 }
 
@@ -79,7 +79,7 @@ TEST(BubbleSortTest, IntArray) {
     int arr[] = { 5, 2, 8, 1, 9, 3 };
     const size_t size = sizeof(arr) / sizeof(arr[0]);
 
-    bubbleSort(arr, size);
+    BubbleSort<int>::sort(arr, size);
     EXPECT_TRUE(std::is_sorted(arr, arr + size));
     EXPECT_EQ(1, arr[0]);
     EXPECT_EQ(9, arr[size - 1]);
@@ -93,10 +93,19 @@ TEST(BubbleSortTest, EmployeeArray) {
     };
     const size_t size = sizeof(arr) / sizeof(arr[0]);
 
-    bubbleSort(arr, size);
+    BubbleSort<Employee>::sort(arr, size);
     EXPECT_TRUE(std::is_sorted(arr, arr + size));
     EXPECT_EQ(1200.0, arr[0].getSalary());
     EXPECT_EQ(5000.0, arr[size - 1].getSalary());
+}
+
+// Тест на эффективность (ранняя остановка при отсортированном массиве)
+TEST(BubbleSortTest, EarlyTermination) {
+    std::vector<int> data = { 1, 2, 3, 4, 5 };
+    // Счетчик для отслеживания количества проходов можно добавить в класс
+    // Но для простоты тестируем, что массив остался отсортированным
+    BubbleSort<int>::sort(data);
+    EXPECT_EQ(std::vector<int>({1, 2, 3, 4, 5}), data);
 }
 
 // Главная функция
